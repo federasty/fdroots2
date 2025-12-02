@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Code, Github, Linkedin, Mail, Home, Sparkles, Briefcase, User, MessageCircle, Zap, Award, Star } from 'lucide-react';
+import { Menu, X, Code, Github, Linkedin, Mail, Home, Sparkles, Briefcase, User, MessageCircle, Terminal, Award, Star } from 'lucide-react';
 
 // --- TIPOS DE NAVEGACIÓN ---
 interface NavItem {
@@ -417,7 +417,7 @@ export default function Navbar() {
 
                             {/* Texto del badge */}
                             <p className="text-xs sm:text-sm font-bold text-white tracking-wide">
-                                <span className="hidden sm:inline">� Portafolio Profesional • </span>
+                                
                                 <span className="bg-white/20 px-2 py-0.5 rounded-md">Disponible para Proyectos</span>
                                 <span className="hidden sm:inline"> • Analista de Sistemas Certificado</span>
                             </p>
@@ -434,7 +434,7 @@ export default function Navbar() {
                                 className="ml-auto p-1 rounded-lg hover:bg-white/20 transition-colors duration-200"
                                 aria-label="Cerrar badge"
                             >
-                                <X className="w-4 h-4 text-white" strokeWidth={2} />
+                          
                             </button>
                         </div>
                     </div>
@@ -532,7 +532,7 @@ export default function Navbar() {
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer-wave" />
                                 </h1>
                                 <div className="flex items-center gap-1.5">
-                                    <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 animate-pulse" strokeWidth={2.5} />
+                               <Terminal className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-pink-500 animate-pulse" strokeWidth={2.5} />
                                     <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-semibold tracking-wide">
                                         Analista de Sistemas
                                     </p>
