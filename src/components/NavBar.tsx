@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Code, Github, Linkedin, Mail, Home, Sparkles, Briefcase, User, MessageCircle, Zap } from 'lucide-react';
+import { Menu, X, Code, Github, Linkedin, Mail, Home, Sparkles, Briefcase, User, MessageCircle, Zap, Award, Star } from 'lucide-react';
 
 // --- TIPOS DE NAVEGACIÓN ---
 interface NavItem {
@@ -55,32 +55,11 @@ const navItems: NavItem[] = [
     },
 ];
 
-// --- COMPONENTE DE BURBUJAS FLOTANTES ---
-const FloatingBubbles: React.FC = () => {
-    return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(15)].map((_, i) => (
-                <div
-                    key={i}
-                    className="absolute rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 backdrop-blur-sm animate-bubble"
-                    style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        width: `${20 + Math.random() * 40}px`,
-                        height: `${20 + Math.random() * 40}px`,
-                        animationDelay: `${Math.random() * 5}s`,
-                        animationDuration: `${10 + Math.random() * 20}s`,
-                    }}
-                />
-            ))}
-        </div>
-    );
-};
-
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [showBadge, setShowBadge] = useState(true);
     const location = useLocation();
     const navigate = useNavigate();
     const navRef = useRef<HTMLDivElement>(null);
@@ -101,6 +80,8 @@ export default function Navbar() {
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
+            // Ocultar badge al hacer scroll
+            setShowBadge(window.scrollY < 50);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
@@ -155,7 +136,7 @@ export default function Navbar() {
                 onClick={() => handleNavClick(item)}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className="relative px-4 py-2.5 transition-all duration-300 group"
+                className="relative px-5 py-3 transition-all duration-300 group"
             >
                 {/* Fondo con glassmorphism */}
                 <div className={`absolute inset-0 rounded-2xl transition-all duration-500 ${isActive
@@ -277,28 +258,6 @@ export default function Navbar() {
         <>
             <style>{`
         /* Animaciones premium y divertidas */
-        @keyframes bubble {
-          0%, 100% { 
-            transform: translateY(0) translateX(0) scale(1);
-            opacity: 0.3;
-          }
-          25% { 
-            transform: translateY(-30px) translateX(10px) scale(1.1);
-            opacity: 0.5;
-          }
-          50% { 
-            transform: translateY(-60px) translateX(-10px) scale(0.9);
-            opacity: 0.7;
-          }
-          75% { 
-            transform: translateY(-30px) translateX(15px) scale(1.05);
-            opacity: 0.5;
-          }
-        }
-        .animate-bubble {
-          animation: bubble ease-in-out infinite;
-        }
-
         @keyframes sparkle {
           0%, 100% { 
             opacity: 0;
@@ -326,15 +285,6 @@ export default function Navbar() {
         }
         .animate-float-gentle {
           animation: float-gentle 4s ease-in-out infinite;
-        }
-
-        @keyframes wiggle {
-          0%, 100% { transform: rotate(0deg); }
-          25% { transform: rotate(-10deg); }
-          75% { transform: rotate(10deg); }
-        }
-        .animate-wiggle {
-          animation: wiggle 0.5s ease-in-out;
         }
 
         @keyframes ping-slow {
@@ -389,6 +339,32 @@ export default function Navbar() {
           animation: rotate-slow 20s linear infinite;
         }
 
+        @keyframes slide-down {
+          from {
+            transform: translateY(-100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        .animate-slide-down {
+          animation: slide-down 0.5s ease-out;
+        }
+
+        @keyframes badge-glow {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(99, 102, 241, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.8), 0 0 60px rgba(99, 102, 241, 0.5);
+          }
+        }
+        .animate-badge-glow {
+          animation: badge-glow 3s ease-in-out infinite;
+        }
+
         /* Efecto de cristal mejorado */
         .glass-effect {
           background: rgba(255, 255, 255, 0.1);
@@ -413,21 +389,72 @@ export default function Navbar() {
           animation: gradient-shift 15s ease infinite;
           background-size: 200% 200%;
         }
+
+        /* Efecto de swipe en móvil */
+        @keyframes swipe-indicator {
+          0%, 100% { transform: translateX(0); opacity: 0.5; }
+          50% { transform: translateX(10px); opacity: 1; }
+        }
+        .animate-swipe {
+          animation: swipe-indicator 2s ease-in-out infinite;
+        }
       `}</style>
 
-            {/* 🌈 NAVEGACIÓN PRINCIPAL TRASLÚCIDA ULTRA PREMIUM */}
+            {/* 🏆 BADGE PROFESIONAL SUPERIOR */}
+            <div className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-500 ${showBadge ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+                }`}>
+                <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 animate-gradient">
+                    {/* Efecto de brillo */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer-wave" />
+
+                    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex items-center justify-center gap-3 py-2.5 sm:py-3">
+                            {/* Icono de estrella animado */}
+                            <div className="relative">
+                                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-300 fill-yellow-300 animate-pulse" strokeWidth={2} />
+                                <div className="absolute inset-0 bg-yellow-300 blur-md opacity-50 animate-pulse" />
+                            </div>
+
+                            {/* Texto del badge */}
+                            <p className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                                <span className="hidden sm:inline">� Portafolio Profesional • </span>
+                                <span className="bg-white/20 px-2 py-0.5 rounded-md">Disponible para Proyectos</span>
+                                <span className="hidden sm:inline"> • Analista de Sistemas Certificado</span>
+                            </p>
+
+                            {/* Icono de award */}
+                            <div className="relative hidden sm:block">
+                                <Award className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-300" strokeWidth={2} />
+                                <div className="absolute inset-0 bg-yellow-300 blur-md opacity-50 animate-pulse" />
+                            </div>
+
+                            {/* Botón de cerrar */}
+                            <button
+                                onClick={() => setShowBadge(false)}
+                                className="ml-auto p-1 rounded-lg hover:bg-white/20 transition-colors duration-200"
+                                aria-label="Cerrar badge"
+                            >
+                                <X className="w-4 h-4 text-white" strokeWidth={2} />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Borde inferior con gradiente */}
+                    <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                </div>
+            </div>
+
+            {/* �🌈 NAVEGACIÓN PRINCIPAL TRASLÚCIDA ULTRA PREMIUM */}
             <nav
                 ref={navRef}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${scrolled
+                className={`fixed left-0 right-0 z-50 transition-all duration-700 ${showBadge ? 'top-[52px] sm:top-[56px]' : 'top-0'
+                    } ${scrolled
                         ? 'glass-effect-strong shadow-2xl shadow-blue-500/10'
                         : 'glass-effect'
                     }`}
             >
                 {/* Fondo con gradiente animado */}
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 animate-gradient" />
-
-                {/* Burbujas flotantes decorativas */}
-                <FloatingBubbles />
 
                 {/* Efecto de luz siguiendo el mouse */}
                 <div
@@ -445,17 +472,18 @@ export default function Navbar() {
                 {/* Borde inferior sutil */}
                 <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-18 sm:h-20">
+                {/* Container más ancho */}
+                <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+                    <div className="flex items-center justify-between h-20 sm:h-24">
 
                         {/* 🎨 LOGO ULTRA PREMIUM CON EFECTOS */}
                         <Link
                             to="/"
                             onClick={() => handleNavClick(navItems[0])}
-                            className="flex items-center gap-3 group relative z-10"
+                            className="flex items-center gap-3 sm:gap-4 group relative z-10"
                         >
                             {/* Logo Container */}
-                            <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+                            <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
 
                                 {/* Anillos decorativos rotativos */}
                                 <div className="absolute inset-0 rounded-2xl border-2 border-blue-400/30 group-hover:border-purple-400/50 transition-all duration-700 animate-rotate-slow">
@@ -470,7 +498,7 @@ export default function Navbar() {
                                 {/* Icono de código con animación */}
                                 <div className="relative z-10 animate-float-gentle">
                                     <Code
-                                        className="w-6 h-6 sm:w-7 sm:h-7 text-slate-700 dark:text-white group-hover:text-blue-500 transition-all duration-500 drop-shadow-lg"
+                                        className="w-6 h-6 sm:w-8 sm:h-8 text-slate-700 dark:text-white group-hover:text-blue-500 transition-all duration-500 drop-shadow-lg"
                                         strokeWidth={2.5}
                                     />
                                     {/* Glow effect */}
@@ -496,7 +524,7 @@ export default function Navbar() {
 
                             {/* Nombre y título */}
                             <div className="flex flex-col">
-                                <h1 className="text-xl sm:text-2xl font-black tracking-tight relative">
+                                <h1 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight relative">
                                     <span className="bg-gradient-to-r from-slate-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent drop-shadow-lg">
                                         FDroots
                                     </span>
@@ -504,8 +532,8 @@ export default function Navbar() {
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer-wave" />
                                 </h1>
                                 <div className="flex items-center gap-1.5">
-                                    <Zap className="w-3 h-3 text-yellow-500 animate-pulse" strokeWidth={2.5} />
-                                    <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold tracking-wide">
+                                    <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 animate-pulse" strokeWidth={2.5} />
+                                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-semibold tracking-wide">
                                         Analista de Sistemas
                                     </p>
                                 </div>
@@ -520,10 +548,10 @@ export default function Navbar() {
                         </div>
 
                         {/* 🌟 REDES SOCIALES Y MENÚ */}
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 sm:gap-4">
 
                             {/* Redes sociales (visible en desktop) */}
-                            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-2xl glass-effect">
+                            <div className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-2xl glass-effect">
                                 <SocialLink
                                     Icon={Github}
                                     href="https://github.com/federasty"
@@ -546,43 +574,49 @@ export default function Navbar() {
                                 />
                             </div>
 
-                            {/* Botón de menú móvil */}
+                            {/* Botón de menú móvil mejorado */}
                             <button
                                 onClick={() => setIsOpen(!isOpen)}
-                                className="lg:hidden relative w-11 h-11 sm:w-12 sm:h-12 rounded-2xl glass-effect hover:glass-effect-strong transition-all duration-300 group"
+                                className="lg:hidden relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl glass-effect hover:glass-effect-strong transition-all duration-300 group"
                                 aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
                             >
                                 {/* Borde con gradiente */}
                                 <div className="absolute inset-0 rounded-2xl border-2 border-white/10 group-hover:border-white/30 transition-all duration-300" />
 
-                                {/* Icono con animación */}
-                                <div className={`relative flex items-center justify-center h-full transition-transform duration-300 ${isOpen ? 'rotate-90' : 'rotate-0'
+                                {/* Icono con animación mejorada */}
+                                <div className={`relative flex items-center justify-center h-full transition-all duration-500 ${isOpen ? 'rotate-180 scale-90' : 'rotate-0 scale-100'
                                     }`}>
                                     {isOpen ? (
-                                        <X className="w-6 h-6 text-slate-700 dark:text-white" strokeWidth={2.5} />
+                                        <X className="w-6 h-6 sm:w-7 sm:h-7 text-slate-700 dark:text-white" strokeWidth={2.5} />
                                     ) : (
-                                        <Menu className="w-6 h-6 text-slate-700 dark:text-white" strokeWidth={2.5} />
+                                        <Menu className="w-6 h-6 sm:w-7 sm:h-7 text-slate-700 dark:text-white" strokeWidth={2.5} />
                                     )}
                                 </div>
 
-                                {/* Efecto de glow */}
+                                {/* Efecto de glow mejorado */}
                                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/20 to-pink-500/0 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
+
+                                {/* Partículas en las esquinas */}
+                                <div className="absolute top-1 left-1 w-1.5 h-1.5 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
+                                <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-purple-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" style={{ animationDelay: '0.1s' }} />
+                                <div className="absolute bottom-1 left-1 w-1.5 h-1.5 bg-pink-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" style={{ animationDelay: '0.2s' }} />
+                                <div className="absolute bottom-1 right-1 w-1.5 h-1.5 bg-indigo-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" style={{ animationDelay: '0.3s' }} />
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* 📱 MENÚ MÓVIL TRASLÚCIDO */}
+                {/* 📱 MENÚ MÓVIL MEJORADO */}
                 <div
-                    className={`lg:hidden transition-all duration-700 ease-out overflow-hidden ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+                    className={`lg:hidden transition-all duration-700 ease-out overflow-hidden ${isOpen ? 'max-h-[700px] opacity-100' : 'max-h-0 opacity-0'
                         }`}
                 >
-                    <div className="relative px-4 sm:px-6 pt-6 pb-8 space-y-2 glass-effect-strong border-t border-white/10">
+                    <div className="relative px-4 sm:px-6 pt-6 pb-8 space-y-3 glass-effect-strong border-t border-white/10">
 
                         {/* Fondo con gradiente */}
                         <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-purple-500/5 to-pink-500/5" />
 
-                        {/* Items del menú */}
+                        {/* Items del menú con efectos mejorados */}
                         {navItems.map((item, index) => {
                             const isActive = activeSection === item.id;
                             const Icon = item.icon;
@@ -591,7 +625,7 @@ export default function Navbar() {
                                 <button
                                     key={item.id}
                                     onClick={() => handleNavClick(item)}
-                                    className={`relative w-full group overflow-hidden transition-all duration-500 rounded-2xl ${isActive ? 'glass-effect-strong' : 'hover:glass-effect'
+                                    className={`relative w-full group overflow-hidden transition-all duration-500 rounded-2xl ${isActive ? 'glass-effect-strong shadow-lg' : 'hover:glass-effect'
                                         }`}
                                     style={{
                                         animationDelay: `${index * 50}ms`,
@@ -602,7 +636,7 @@ export default function Navbar() {
                                 >
                                     {/* Borde con gradiente */}
                                     {isActive && (
-                                        <div className={`absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r ${item.gradient} bg-clip-border`} style={{
+                                        <div className={`absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r ${item.gradient} bg-clip-border animate-badge-glow`} style={{
                                             WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
                                             WebkitMaskComposite: 'xor',
                                             maskComposite: 'exclude',
@@ -614,11 +648,11 @@ export default function Navbar() {
                                         <div className={`absolute inset-0 bg-gradient-to-r ${item.gradient} opacity-10 blur-xl`} />
                                     )}
 
-                                    <div className="relative flex items-center gap-4 px-5 py-4">
-                                        {/* Icono */}
-                                        <div className={`relative transition-all duration-500 ${isActive ? 'scale-110 rotate-12' : 'scale-100 rotate-0 group-hover:scale-110 group-hover:rotate-12'
+                                    <div className="relative flex items-center gap-4 px-5 py-4 sm:py-5">
+                                        {/* Icono con efecto mejorado */}
+                                        <div className={`relative transition-all duration-500 ${isActive ? 'scale-125 rotate-12' : 'scale-100 rotate-0 group-hover:scale-110 group-hover:rotate-6'
                                             }`}>
-                                            <Icon className={`w-6 h-6 transition-all duration-300 ${isActive ? item.color : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white'
+                                            <Icon className={`w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 ${isActive ? item.color : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white'
                                                 }`} strokeWidth={2} />
                                             {isActive && (
                                                 <div className={`absolute inset-0 bg-gradient-to-r ${item.gradient} blur-lg opacity-50 animate-pulse`} />
@@ -626,31 +660,32 @@ export default function Navbar() {
                                         </div>
 
                                         {/* Texto */}
-                                        <span className={`font-bold text-base tracking-wide transition-all duration-300 ${isActive
+                                        <span className={`font-bold text-base sm:text-lg tracking-wide transition-all duration-300 ${isActive
                                                 ? 'text-slate-900 dark:text-white'
                                                 : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white'
                                             }`}>
                                             {item.label}
                                         </span>
 
-                                        {/* Indicador de activo */}
+                                        {/* Indicador de activo mejorado */}
                                         {isActive && (
                                             <div className="ml-auto flex items-center gap-2">
-                                                <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${item.gradient} animate-pulse shadow-lg`} />
+                                                <div className={`w-2.5 h-2.5 rounded-full bg-gradient-to-r ${item.gradient} animate-pulse shadow-lg`} />
+                                                <span className="text-xs font-bold text-slate-500 dark:text-slate-400">ACTIVO</span>
                                             </div>
                                         )}
                                     </div>
 
-                                    {/* Partículas */}
+                                    {/* Partículas mejoradas */}
                                     {isActive && (
                                         <div className="absolute inset-0 pointer-events-none">
-                                            {[...Array(4)].map((_, i) => (
+                                            {[...Array(6)].map((_, i) => (
                                                 <div
                                                     key={i}
                                                     className={`absolute w-1 h-1 rounded-full bg-gradient-to-r ${item.gradient} animate-sparkle`}
                                                     style={{
-                                                        left: `${20 + Math.random() * 60}%`,
-                                                        top: `${20 + Math.random() * 60}%`,
+                                                        left: `${15 + Math.random() * 70}%`,
+                                                        top: `${15 + Math.random() * 70}%`,
                                                         animationDelay: `${i * 0.2}s`,
                                                     }}
                                                 />
@@ -661,8 +696,8 @@ export default function Navbar() {
                             );
                         })}
 
-                        {/* Redes sociales en móvil */}
-                        <div className="flex items-center justify-center gap-3 pt-6 mt-4 border-t border-white/10">
+                        {/* Redes sociales en móvil mejoradas */}
+                        <div className="flex items-center justify-center gap-4 pt-6 mt-4 border-t border-white/10">
                             <SocialLink
                                 Icon={Github}
                                 href="https://github.com/federasty"
@@ -683,14 +718,14 @@ export default function Navbar() {
                             />
                         </div>
 
-                        {/* CTA de contacto premium */}
+                        {/* CTA de contacto premium mejorado */}
                         <Link
                             to="/contacto"
                             onClick={() => {
                                 setActiveSection('contact');
                                 setIsOpen(false);
                             }}
-                            className="relative block w-full mt-6 text-center py-4 overflow-hidden rounded-2xl font-bold text-base text-white transition-all duration-500 group"
+                            className="relative block w-full mt-6 text-center py-4 sm:py-5 overflow-hidden rounded-2xl font-bold text-base sm:text-lg text-white transition-all duration-500 group"
                         >
                             {/* Fondo con gradiente animado */}
                             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 animate-gradient" />
@@ -699,27 +734,27 @@ export default function Navbar() {
                             <div className="absolute inset-0 glass-effect" />
 
                             {/* Borde brillante */}
-                            <div className="absolute inset-0 rounded-2xl border-2 border-white/30 group-hover:border-white/50 transition-all duration-300" />
+                            <div className="absolute inset-0 rounded-2xl border-2 border-white/30 group-hover:border-white/50 transition-all duration-300 animate-badge-glow" />
 
                             {/* Efecto de brillo */}
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer-wave" />
 
                             {/* Texto */}
-                            <span className="relative z-10 flex items-center justify-center gap-2.5">
-                                <MessageCircle className="w-5 h-5 animate-bounce-gentle" strokeWidth={2.5} />
+                            <span className="relative z-10 flex items-center justify-center gap-3">
+                                <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 animate-bounce-gentle" strokeWidth={2.5} />
                                 ¡Hablemos!
-                                <Sparkles className="w-5 h-5 animate-pulse" strokeWidth={2.5} />
+                                <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" strokeWidth={2.5} />
                             </span>
 
-                            {/* Partículas decorativas */}
+                            {/* Partículas decorativas mejoradas */}
                             <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                {[...Array(8)].map((_, i) => (
+                                {[...Array(12)].map((_, i) => (
                                     <div
                                         key={i}
                                         className="absolute w-1 h-1 rounded-full bg-white animate-sparkle"
                                         style={{
-                                            left: `${10 + Math.random() * 80}%`,
-                                            top: `${10 + Math.random() * 80}%`,
+                                            left: `${5 + Math.random() * 90}%`,
+                                            top: `${5 + Math.random() * 90}%`,
                                             animationDelay: `${i * 0.1}s`,
                                         }}
                                     />
