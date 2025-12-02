@@ -1,21 +1,81 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Code, Github, Linkedin, Mail, ArrowRight } from 'lucide-react';
+import { Menu, X, Code, Github, Linkedin, Mail, Home, Sparkles, Briefcase, User, MessageCircle, Zap } from 'lucide-react';
 
 // --- TIPOS DE NAVEGACIÓN ---
 interface NavItem {
     id: string;
     label: string;
     path: string;
+    icon: React.FC<any>;
+    color: string;
+    gradient: string;
 }
 
 const navItems: NavItem[] = [
-    { id: 'home', label: 'Inicio', path: '/' },
-    { id: 'skills', label: 'Habilidades', path: '/habilidades' },
-    { id: 'projects', label: 'Proyectos', path: '/proyectos' },
-    { id: 'about', label: 'Sobre Mí', path: '/sobre-mi' },
-    { id: 'contact', label: 'Contacto', path: '/contacto' },
+    {
+        id: 'home',
+        label: 'Inicio',
+        path: '/',
+        icon: Home,
+        color: 'text-blue-500',
+        gradient: 'from-blue-500 to-cyan-500'
+    },
+    {
+        id: 'skills',
+        label: 'Habilidades',
+        path: '/habilidades',
+        icon: Sparkles,
+        color: 'text-purple-500',
+        gradient: 'from-purple-500 to-pink-500'
+    },
+    {
+        id: 'projects',
+        label: 'Proyectos',
+        path: '/proyectos',
+        icon: Briefcase,
+        color: 'text-orange-500',
+        gradient: 'from-orange-500 to-red-500'
+    },
+    {
+        id: 'about',
+        label: 'Sobre Mí',
+        path: '/sobre-mi',
+        icon: User,
+        color: 'text-green-500',
+        gradient: 'from-green-500 to-emerald-500'
+    },
+    {
+        id: 'contact',
+        label: 'Contacto',
+        path: '/contacto',
+        icon: MessageCircle,
+        color: 'text-indigo-500',
+        gradient: 'from-indigo-500 to-blue-500'
+    },
 ];
+
+// --- COMPONENTE DE BURBUJAS FLOTANTES ---
+const FloatingBubbles: React.FC = () => {
+    return (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {[...Array(15)].map((_, i) => (
+                <div
+                    key={i}
+                    className="absolute rounded-full bg-gradient-to-br from-blue-400/20 to-purple-400/20 backdrop-blur-sm animate-bubble"
+                    style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        width: `${20 + Math.random() * 40}px`,
+                        height: `${20 + Math.random() * 40}px`,
+                        animationDelay: `${Math.random() * 5}s`,
+                        animationDuration: `${10 + Math.random() * 20}s`,
+                    }}
+                />
+            ))}
+        </div>
+    );
+};
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +106,7 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Seguimiento del mouse para efectos sutiles
+    // Seguimiento del mouse para efectos
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             if (navRef.current) {
@@ -84,58 +144,131 @@ export default function Navbar() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // --- BOTÓN DE NAVEGACIÓN MINIMALISTA PREMIUM ---
+    // --- BOTÓN DE NAVEGACIÓN CON ICONOS ANIMADOS ---
     const NavButton: React.FC<{ item: NavItem }> = ({ item }) => {
+        const [isHovered, setIsHovered] = useState(false);
         const isActive = activeSection === item.id;
+        const Icon = item.icon;
 
         return (
             <button
                 onClick={() => handleNavClick(item)}
-                className="relative px-5 py-2.5 text-sm font-medium tracking-wide transition-all duration-300 group"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="relative px-4 py-2.5 transition-all duration-300 group"
             >
-                {/* Texto */}
-                <span className={`relative z-10 transition-all duration-300 ${isActive
-                        ? 'text-slate-900 dark:text-white font-semibold'
-                        : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white'
+                {/* Fondo con glassmorphism */}
+                <div className={`absolute inset-0 rounded-2xl transition-all duration-500 ${isActive
+                        ? 'bg-white/20 dark:bg-white/10 backdrop-blur-xl shadow-lg scale-100'
+                        : 'bg-white/0 backdrop-blur-0 scale-95 group-hover:bg-white/10 group-hover:backdrop-blur-xl group-hover:scale-100'
                     }`}>
-                    {item.label}
-                </span>
-
-                {/* Indicador inferior minimalista */}
-                <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-500 ease-out ${isActive
-                        ? 'w-full opacity-100'
-                        : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-100'
-                    }`}>
-                    {isActive && (
-                        <div className="absolute inset-0 bg-blue-500 blur-sm animate-pulse" />
-                    )}
+                    {/* Borde con gradiente */}
+                    <div className={`absolute inset-0 rounded-2xl border-2 transition-all duration-500 ${isActive
+                            ? `border-transparent bg-gradient-to-r ${item.gradient} bg-clip-border opacity-100`
+                            : 'border-white/10 group-hover:border-white/20'
+                        }`} style={{
+                            WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
+                            WebkitMaskComposite: 'xor',
+                            maskComposite: 'exclude',
+                        }} />
                 </div>
 
-                {/* Efecto de brillo sutil en hover */}
-                <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-blue-500/0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isActive ? 'opacity-100' : ''
-                    }`} />
+                {/* Contenido */}
+                <div className="relative z-10 flex items-center gap-2.5">
+                    {/* Icono con animación */}
+                    <div className={`relative transition-all duration-500 ${isActive || isHovered ? 'scale-110 rotate-12' : 'scale-100 rotate-0'
+                        }`}>
+                        <Icon className={`w-5 h-5 transition-all duration-300 ${isActive ? item.color : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white'
+                            }`} strokeWidth={2} />
+
+                        {/* Glow effect en el icono */}
+                        {isActive && (
+                            <div className={`absolute inset-0 bg-gradient-to-r ${item.gradient} blur-lg opacity-50 animate-pulse`} />
+                        )}
+                    </div>
+
+                    {/* Texto */}
+                    <span className={`text-sm font-semibold tracking-wide transition-all duration-300 ${isActive
+                            ? 'text-slate-900 dark:text-white'
+                            : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white'
+                        }`}>
+                        {item.label}
+                    </span>
+                </div>
+
+                {/* Partículas mágicas al hacer hover */}
+                {(isHovered || isActive) && (
+                    <div className="absolute inset-0 pointer-events-none">
+                        {[...Array(6)].map((_, i) => (
+                            <div
+                                key={i}
+                                className={`absolute w-1 h-1 rounded-full bg-gradient-to-r ${item.gradient} animate-sparkle`}
+                                style={{
+                                    left: `${20 + Math.random() * 60}%`,
+                                    top: `${20 + Math.random() * 60}%`,
+                                    animationDelay: `${i * 0.15}s`,
+                                }}
+                            />
+                        ))}
+                    </div>
+                )}
+
+                {/* Efecto de onda en click */}
+                {isActive && (
+                    <div className="absolute inset-0 rounded-2xl">
+                        <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${item.gradient} opacity-20 animate-ping-slow`} />
+                    </div>
+                )}
             </button>
         );
     };
 
-    // --- ENLACE A REDES SOCIALES MINIMALISTA ---
-    const SocialLink: React.FC<{ Icon: React.FC<any>, href: string, label: string }> = ({ Icon, href, label }) => {
+    // --- ENLACE A REDES SOCIALES CON EFECTOS ---
+    const SocialLink: React.FC<{ Icon: React.FC<any>, href: string, label: string, color: string }> = ({ Icon, href, label, color }) => {
+        const [isHovered, setIsHovered] = useState(false);
+
         return (
             <a
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="relative p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-300 group"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="relative p-2.5 rounded-xl transition-all duration-300 group"
             >
-                {/* Fondo sutil en hover */}
-                <div className="absolute inset-0 bg-slate-200 dark:bg-slate-800 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Fondo glassmorphism */}
+                <div className={`absolute inset-0 rounded-xl bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 ${isHovered ? 'scale-110' : 'scale-100'
+                    }`} />
 
                 {/* Icono */}
-                <Icon className="relative w-5 h-5 transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
+                <Icon className={`relative w-5 h-5 transition-all duration-500 ${isHovered
+                        ? `${color} scale-110 rotate-12`
+                        : 'text-slate-600 dark:text-slate-400 scale-100 rotate-0'
+                    }`} strokeWidth={2} />
 
-                {/* Efecto de brillo */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-blue-500/10 to-indigo-500/0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {/* Efecto de glow */}
+                {isHovered && (
+                    <div className={`absolute inset-0 ${color} blur-xl opacity-30 animate-pulse`} />
+                )}
+
+                {/* Partículas */}
+                {isHovered && (
+                    <div className="absolute inset-0 pointer-events-none">
+                        {[...Array(4)].map((_, i) => (
+                            <div
+                                key={i}
+                                className={`absolute w-1 h-1 rounded-full ${color} bg-current animate-sparkle`}
+                                style={{
+                                    left: '50%',
+                                    top: '50%',
+                                    transform: `rotate(${i * 90}deg) translateY(-20px)`,
+                                    animationDelay: `${i * 0.1}s`,
+                                }}
+                            />
+                        ))}
+                    </div>
+                )}
             </a>
         );
     };
@@ -143,13 +276,109 @@ export default function Navbar() {
     return (
         <>
             <style>{`
-        /* Animaciones minimalistas y elegantes */
-        @keyframes gentle-float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-3px); }
+        /* Animaciones premium y divertidas */
+        @keyframes bubble {
+          0%, 100% { 
+            transform: translateY(0) translateX(0) scale(1);
+            opacity: 0.3;
+          }
+          25% { 
+            transform: translateY(-30px) translateX(10px) scale(1.1);
+            opacity: 0.5;
+          }
+          50% { 
+            transform: translateY(-60px) translateX(-10px) scale(0.9);
+            opacity: 0.7;
+          }
+          75% { 
+            transform: translateY(-30px) translateX(15px) scale(1.05);
+            opacity: 0.5;
+          }
         }
-        .animate-gentle-float {
-          animation: gentle-float 3s ease-in-out infinite;
+        .animate-bubble {
+          animation: bubble ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+          0%, 100% { 
+            opacity: 0;
+            transform: translate(0, 0) scale(0);
+          }
+          50% { 
+            opacity: 1;
+            transform: translate(var(--tx, 10px), var(--ty, -10px)) scale(1);
+          }
+        }
+        .animate-sparkle {
+          animation: sparkle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes float-gentle {
+          0%, 100% { 
+            transform: translateY(0px) rotate(0deg);
+          }
+          33% { 
+            transform: translateY(-8px) rotate(5deg);
+          }
+          66% { 
+            transform: translateY(-4px) rotate(-5deg);
+          }
+        }
+        .animate-float-gentle {
+          animation: float-gentle 4s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+          0%, 100% { transform: rotate(0deg); }
+          25% { transform: rotate(-10deg); }
+          75% { transform: rotate(10deg); }
+        }
+        .animate-wiggle {
+          animation: wiggle 0.5s ease-in-out;
+        }
+
+        @keyframes ping-slow {
+          0% { 
+            transform: scale(1);
+            opacity: 0.5;
+          }
+          100% { 
+            transform: scale(1.5);
+            opacity: 0;
+          }
+        }
+        .animate-ping-slow {
+          animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes shimmer-wave {
+          0% { 
+            background-position: -200% center;
+            opacity: 0;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% { 
+            background-position: 200% center;
+            opacity: 0;
+          }
+        }
+        .animate-shimmer-wave {
+          animation: shimmer-wave 3s ease-in-out infinite;
+          background-size: 200% 100%;
+        }
+
+        @keyframes bounce-gentle {
+          0%, 100% { 
+            transform: translateY(0);
+          }
+          50% { 
+            transform: translateY(-10px);
+          }
+        }
+        .animate-bounce-gentle {
+          animation: bounce-gentle 2s ease-in-out infinite;
         }
 
         @keyframes rotate-slow {
@@ -160,243 +389,342 @@ export default function Navbar() {
           animation: rotate-slow 20s linear infinite;
         }
 
-        @keyframes shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        .animate-shimmer {
-          animation: shimmer 8s ease-in-out infinite;
-          background-size: 200% 100%;
-        }
-
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fade-in-up {
-          animation: fade-in-up 0.5s ease-out forwards;
+        /* Efecto de cristal mejorado */
+        .glass-effect {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(20px) saturate(180%);
+          -webkit-backdrop-filter: blur(20px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Smooth gradient background */
-        .gradient-mesh {
-          background: 
-            radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
-            radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%),
-            radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
+        .glass-effect-strong {
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(30px) saturate(200%);
+          -webkit-backdrop-filter: blur(30px) saturate(200%);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Gradiente animado de fondo */
+        @keyframes gradient-shift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-gradient {
+          animation: gradient-shift 15s ease infinite;
+          background-size: 200% 200%;
         }
       `}</style>
 
-            {/* 💎 NAVEGACIÓN PRINCIPAL MINIMALISTA PREMIUM */}
+            {/* 🌈 NAVEGACIÓN PRINCIPAL TRASLÚCIDA ULTRA PREMIUM */}
             <nav
                 ref={navRef}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-                        ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-lg shadow-slate-200/50 dark:shadow-slate-900/50 border-b border-slate-200/50 dark:border-slate-800/50'
-                        : 'bg-white/60 dark:bg-slate-950/60 backdrop-blur-md border-b border-slate-200/30 dark:border-slate-800/30'
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${scrolled
+                        ? 'glass-effect-strong shadow-2xl shadow-blue-500/10'
+                        : 'glass-effect'
                     }`}
             >
-                {/* Efecto de luz siguiendo el mouse (muy sutil) */}
+                {/* Fondo con gradiente animado */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 animate-gradient" />
+
+                {/* Burbujas flotantes decorativas */}
+                <FloatingBubbles />
+
+                {/* Efecto de luz siguiendo el mouse */}
                 <div
-                    className="absolute inset-0 pointer-events-none opacity-0 hover:opacity-100 transition-opacity duration-700"
+                    className="absolute inset-0 pointer-events-none opacity-30 transition-opacity duration-500"
                     style={{
-                        background: `radial-gradient(800px circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(59, 130, 246, 0.03), transparent 50%)`,
+                        background: `radial-gradient(600px circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(99, 102, 241, 0.15), transparent 50%)`,
                     }}
                 />
 
-                {/* Gradiente superior sutil */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+                {/* Borde superior con gradiente arcoíris */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-60">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 blur-sm animate-pulse" />
+                </div>
+
+                {/* Borde inferior sutil */}
+                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-16 sm:h-20">
+                    <div className="flex items-center justify-between h-18 sm:h-20">
 
-                        {/* LOGO MINIMALISTA PREMIUM */}
+                        {/* 🎨 LOGO ULTRA PREMIUM CON EFECTOS */}
                         <Link
                             to="/"
                             onClick={() => handleNavClick(navItems[0])}
-                            className="flex items-center gap-3 group"
+                            className="flex items-center gap-3 group relative z-10"
                         >
-                            {/* Logo Icon */}
-                            <div className="relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
+                            {/* Logo Container */}
+                            <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
 
-                                {/* Círculo de fondo con gradiente sutil */}
-                                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/10 to-indigo-500/10 group-hover:from-blue-500/20 group-hover:to-indigo-500/20 transition-all duration-500" />
-
-                                {/* Borde decorativo */}
-                                <div className="absolute inset-0 rounded-xl border border-slate-200 dark:border-slate-800 group-hover:border-blue-500/30 transition-all duration-500" />
-
-                                {/* Icono de código */}
-                                <Code
-                                    className="relative w-5 h-5 sm:w-6 sm:h-6 text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all duration-500 animate-gentle-float"
-                                    strokeWidth={2}
-                                />
-
-                                {/* Punto de acento */}
-                                <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                    <div className="absolute inset-0 bg-blue-400 rounded-full blur-sm animate-pulse" />
+                                {/* Anillos decorativos rotativos */}
+                                <div className="absolute inset-0 rounded-2xl border-2 border-blue-400/30 group-hover:border-purple-400/50 transition-all duration-700 animate-rotate-slow">
+                                    <div className="absolute -top-1 left-1/2 w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full shadow-lg shadow-blue-400/50" />
                                 </div>
+
+                                {/* Fondo glassmorphism */}
+                                <div className="absolute inset-1 rounded-xl glass-effect group-hover:glass-effect-strong transition-all duration-500">
+                                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-gradient" />
+                                </div>
+
+                                {/* Icono de código con animación */}
+                                <div className="relative z-10 animate-float-gentle">
+                                    <Code
+                                        className="w-6 h-6 sm:w-7 sm:h-7 text-slate-700 dark:text-white group-hover:text-blue-500 transition-all duration-500 drop-shadow-lg"
+                                        strokeWidth={2.5}
+                                    />
+                                    {/* Glow effect */}
+                                    <div className="absolute inset-0 bg-blue-500 blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
+                                </div>
+
+                                {/* Partículas orbitales */}
+                                {[0, 120, 240].map((rotation, i) => (
+                                    <div
+                                        key={i}
+                                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700"
+                                        style={{
+                                            transform: `rotate(${rotation}deg)`,
+                                            transitionDelay: `${i * 100}ms`
+                                        }}
+                                    >
+                                        <div className="absolute -top-1 left-1/2 w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full shadow-lg shadow-blue-400/50 animate-bounce-gentle"
+                                            style={{ animationDelay: `${i * 0.3}s` }}
+                                        />
+                                    </div>
+                                ))}
                             </div>
 
                             {/* Nombre y título */}
                             <div className="flex flex-col">
-                                <h1 className="text-lg sm:text-xl font-bold tracking-tight">
-                                    <span className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-white dark:via-slate-100 dark:to-white bg-clip-text text-transparent">
+                                <h1 className="text-xl sm:text-2xl font-black tracking-tight relative">
+                                    <span className="bg-gradient-to-r from-slate-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent drop-shadow-lg">
                                         FDroots
                                     </span>
+                                    {/* Efecto de brillo */}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer-wave" />
                                 </h1>
-                                <p className="text-xs text-slate-600 dark:text-slate-400 font-medium tracking-wide">
-                                    Analista de Sistemas
-                                </p>
+                                <div className="flex items-center gap-1.5">
+                                    <Zap className="w-3 h-3 text-yellow-500 animate-pulse" strokeWidth={2.5} />
+                                    <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold tracking-wide">
+                                        Analista de Sistemas
+                                    </p>
+                                </div>
                             </div>
                         </Link>
 
-                        {/* NAVEGACIÓN HORIZONTAL (DESKTOP) */}
-                        <div className="hidden lg:flex items-center gap-1">
+                        {/* 🎯 NAVEGACIÓN HORIZONTAL (DESKTOP) */}
+                        <div className="hidden lg:flex items-center gap-2">
                             {navItems.map((item) => (
                                 <NavButton key={item.id} item={item} />
                             ))}
                         </div>
 
-                        {/* REDES SOCIALES Y MENÚ */}
-                        <div className="flex items-center gap-2 sm:gap-3">
+                        {/* 🌟 REDES SOCIALES Y MENÚ */}
+                        <div className="flex items-center gap-3">
 
                             {/* Redes sociales (visible en desktop) */}
-                            <div className="hidden sm:flex items-center gap-1 mr-2">
+                            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-2xl glass-effect">
                                 <SocialLink
                                     Icon={Github}
                                     href="https://github.com/federasty"
                                     label="GitHub"
+                                    color="text-purple-500"
                                 />
+                                <div className="w-px h-5 bg-white/20" />
                                 <SocialLink
                                     Icon={Linkedin}
                                     href="https://www.linkedin.com/in/federico-daniel-142b22349/"
                                     label="LinkedIn"
+                                    color="text-blue-500"
                                 />
+                                <div className="w-px h-5 bg-white/20" />
                                 <SocialLink
                                     Icon={Mail}
                                     href="mailto:federicodaniel7@gmail.com"
                                     label="Email"
+                                    color="text-orange-500"
                                 />
                             </div>
-
-                            {/* Separador */}
-                            <div className="hidden sm:block w-px h-6 bg-slate-200 dark:bg-slate-800" />
 
                             {/* Botón de menú móvil */}
                             <button
                                 onClick={() => setIsOpen(!isOpen)}
-                                className="lg:hidden relative w-10 h-10 sm:w-11 sm:h-11 rounded-lg border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300 group"
+                                className="lg:hidden relative w-11 h-11 sm:w-12 sm:h-12 rounded-2xl glass-effect hover:glass-effect-strong transition-all duration-300 group"
                                 aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
                             >
-                                {/* Fondo */}
-                                <div className="absolute inset-0 bg-slate-100 dark:bg-slate-900 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                {/* Borde con gradiente */}
+                                <div className="absolute inset-0 rounded-2xl border-2 border-white/10 group-hover:border-white/30 transition-all duration-300" />
 
-                                {/* Icono */}
-                                <div className="relative flex items-center justify-center h-full">
+                                {/* Icono con animación */}
+                                <div className={`relative flex items-center justify-center h-full transition-transform duration-300 ${isOpen ? 'rotate-90' : 'rotate-0'
+                                    }`}>
                                     {isOpen ? (
-                                        <X className="w-5 h-5 text-slate-700 dark:text-slate-300" strokeWidth={2} />
+                                        <X className="w-6 h-6 text-slate-700 dark:text-white" strokeWidth={2.5} />
                                     ) : (
-                                        <Menu className="w-5 h-5 text-slate-700 dark:text-slate-300" strokeWidth={2} />
+                                        <Menu className="w-6 h-6 text-slate-700 dark:text-white" strokeWidth={2.5} />
                                     )}
                                 </div>
+
+                                {/* Efecto de glow */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/20 to-pink-500/0 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300" />
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* MENÚ MÓVIL MINIMALISTA */}
+                {/* 📱 MENÚ MÓVIL TRASLÚCIDO */}
                 <div
-                    className={`lg:hidden transition-all duration-500 ease-out overflow-hidden ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+                    className={`lg:hidden transition-all duration-700 ease-out overflow-hidden ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
                         }`}
                 >
-                    <div className="px-4 sm:px-6 pt-4 pb-6 space-y-1 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-800/50">
+                    <div className="relative px-4 sm:px-6 pt-6 pb-8 space-y-2 glass-effect-strong border-t border-white/10">
+
+                        {/* Fondo con gradiente */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-purple-500/5 to-pink-500/5" />
 
                         {/* Items del menú */}
                         {navItems.map((item, index) => {
                             const isActive = activeSection === item.id;
+                            const Icon = item.icon;
 
                             return (
                                 <button
                                     key={item.id}
                                     onClick={() => handleNavClick(item)}
-                                    className={`w-full group relative overflow-hidden transition-all duration-300 rounded-lg ${isActive
-                                            ? 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30'
-                                            : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+                                    className={`relative w-full group overflow-hidden transition-all duration-500 rounded-2xl ${isActive ? 'glass-effect-strong' : 'hover:glass-effect'
                                         }`}
                                     style={{
                                         animationDelay: `${index * 50}ms`,
                                         opacity: isOpen ? 1 : 0,
-                                        transform: isOpen ? 'translateY(0)' : 'translateY(-10px)',
-                                        transition: `all 0.3s ease-out ${index * 50}ms`,
+                                        transform: isOpen ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.95)',
+                                        transition: `all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${index * 50}ms`,
                                     }}
                                 >
-                                    {/* Borde izquierdo */}
-                                    <div className={`absolute left-0 top-1/2 -translate-y-1/2 h-8 w-1 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-r-full transition-all duration-300 ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'
-                                        }`} />
+                                    {/* Borde con gradiente */}
+                                    {isActive && (
+                                        <div className={`absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r ${item.gradient} bg-clip-border`} style={{
+                                            WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
+                                            WebkitMaskComposite: 'xor',
+                                            maskComposite: 'exclude',
+                                        }} />
+                                    )}
 
-                                    <div className="relative flex items-center justify-between px-4 py-3.5">
+                                    {/* Efecto de glow */}
+                                    {isActive && (
+                                        <div className={`absolute inset-0 bg-gradient-to-r ${item.gradient} opacity-10 blur-xl`} />
+                                    )}
+
+                                    <div className="relative flex items-center gap-4 px-5 py-4">
+                                        {/* Icono */}
+                                        <div className={`relative transition-all duration-500 ${isActive ? 'scale-110 rotate-12' : 'scale-100 rotate-0 group-hover:scale-110 group-hover:rotate-12'
+                                            }`}>
+                                            <Icon className={`w-6 h-6 transition-all duration-300 ${isActive ? item.color : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white'
+                                                }`} strokeWidth={2} />
+                                            {isActive && (
+                                                <div className={`absolute inset-0 bg-gradient-to-r ${item.gradient} blur-lg opacity-50 animate-pulse`} />
+                                            )}
+                                        </div>
+
                                         {/* Texto */}
-                                        <span className={`font-medium text-sm transition-all duration-300 ${isActive
-                                                ? 'text-slate-900 dark:text-white font-semibold'
+                                        <span className={`font-bold text-base tracking-wide transition-all duration-300 ${isActive
+                                                ? 'text-slate-900 dark:text-white'
                                                 : 'text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white'
                                             }`}>
                                             {item.label}
                                         </span>
 
-                                        {/* Flecha indicadora */}
-                                        <ArrowRight className={`w-4 h-4 transition-all duration-300 ${isActive
-                                                ? 'text-blue-600 dark:text-blue-400 opacity-100 translate-x-0'
-                                                : 'text-slate-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
-                                            }`} strokeWidth={2} />
+                                        {/* Indicador de activo */}
+                                        {isActive && (
+                                            <div className="ml-auto flex items-center gap-2">
+                                                <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${item.gradient} animate-pulse shadow-lg`} />
+                                            </div>
+                                        )}
                                     </div>
+
+                                    {/* Partículas */}
+                                    {isActive && (
+                                        <div className="absolute inset-0 pointer-events-none">
+                                            {[...Array(4)].map((_, i) => (
+                                                <div
+                                                    key={i}
+                                                    className={`absolute w-1 h-1 rounded-full bg-gradient-to-r ${item.gradient} animate-sparkle`}
+                                                    style={{
+                                                        left: `${20 + Math.random() * 60}%`,
+                                                        top: `${20 + Math.random() * 60}%`,
+                                                        animationDelay: `${i * 0.2}s`,
+                                                    }}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
                                 </button>
                             );
                         })}
 
                         {/* Redes sociales en móvil */}
-                        <div className="flex items-center justify-center gap-2 pt-6 mt-4 border-t border-slate-200 dark:border-slate-800">
+                        <div className="flex items-center justify-center gap-3 pt-6 mt-4 border-t border-white/10">
                             <SocialLink
                                 Icon={Github}
                                 href="https://github.com/federasty"
                                 label="GitHub"
+                                color="text-purple-500"
                             />
                             <SocialLink
                                 Icon={Linkedin}
                                 href="https://www.linkedin.com/in/federico-daniel-142b22349/"
                                 label="LinkedIn"
+                                color="text-blue-500"
                             />
                             <SocialLink
                                 Icon={Mail}
                                 href="mailto:federicodaniel7@gmail.com"
                                 label="Email"
+                                color="text-orange-500"
                             />
                         </div>
 
-                        {/* CTA de contacto */}
+                        {/* CTA de contacto premium */}
                         <Link
                             to="/contacto"
                             onClick={() => {
                                 setActiveSection('contact');
                                 setIsOpen(false);
                             }}
-                            className="relative block w-full mt-4 text-center py-3.5 overflow-hidden rounded-lg font-semibold text-sm text-white transition-all duration-300 group"
+                            className="relative block w-full mt-6 text-center py-4 overflow-hidden rounded-2xl font-bold text-base text-white transition-all duration-500 group"
                         >
-                            {/* Fondo con gradiente */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:from-blue-700 group-hover:to-indigo-700 transition-all duration-300" />
+                            {/* Fondo con gradiente animado */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 animate-gradient" />
 
-                            {/* Brillo sutil */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                            {/* Glassmorphism overlay */}
+                            <div className="absolute inset-0 glass-effect" />
+
+                            {/* Borde brillante */}
+                            <div className="absolute inset-0 rounded-2xl border-2 border-white/30 group-hover:border-white/50 transition-all duration-300" />
+
+                            {/* Efecto de brillo */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer-wave" />
 
                             {/* Texto */}
-                            <span className="relative z-10 flex items-center justify-center gap-2">
-                                Iniciar Conversación
-                                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={2} />
+                            <span className="relative z-10 flex items-center justify-center gap-2.5">
+                                <MessageCircle className="w-5 h-5 animate-bounce-gentle" strokeWidth={2.5} />
+                                ¡Hablemos!
+                                <Sparkles className="w-5 h-5 animate-pulse" strokeWidth={2.5} />
                             </span>
+
+                            {/* Partículas decorativas */}
+                            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                {[...Array(8)].map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="absolute w-1 h-1 rounded-full bg-white animate-sparkle"
+                                        style={{
+                                            left: `${10 + Math.random() * 80}%`,
+                                            top: `${10 + Math.random() * 80}%`,
+                                            animationDelay: `${i * 0.1}s`,
+                                        }}
+                                    />
+                                ))}
+                            </div>
                         </Link>
                     </div>
                 </div>
