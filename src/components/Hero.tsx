@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Code2, Sparkles, Rocket, Database, Layers, Cpu, Globe, Terminal, ChevronDown, ArrowRight, Server, Zap } from 'lucide-react';
+import { Code2, Rocket, Database, Layers, Cpu, Globe, Terminal, ArrowRight, Server, Zap } from 'lucide-react';
 
 export default function Hero() {
     const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
