@@ -381,7 +381,6 @@ export default function Hero() {
                                 <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
                                 <div className="absolute inset-0 bg-gradient-to-r from-white/30 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                 <div className="relative px-5 sm:px-7 py-2.5 sm:py-3 flex items-center justify-center gap-2 backdrop-blur-xl bg-gradient-to-r from-white/10 to-white/5 border border-white/30 rounded-xl">
-                                    <Rocket className="w-4 h-4 text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500 drop-shadow-lg" strokeWidth={2.5} />
                                     <span className="text-sm font-black text-white tracking-wide drop-shadow-lg">Proyectos</span>
                                     <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                                 </div>
@@ -393,7 +392,7 @@ export default function Hero() {
                                 <div className="relative px-5 sm:px-7 py-2.5 sm:py-3 flex items-center justify-center gap-2">
                                     <Terminal className="w-4 h-4 text-violet-400 group-hover:text-violet-300 transition-colors duration-500 drop-shadow-lg" strokeWidth={2.5} />
                                     <span className="text-sm font-black text-white tracking-wide">Contacto</span>
-                                    <ArrowRight className="w-4 h-4 text-violet-400 group-hover:translate-x-2 transition-transform duration-500 drop-shadow-lg" strokeWidth={2.5} />
+                                    
                                 </div>
                             </button>
                         </div>

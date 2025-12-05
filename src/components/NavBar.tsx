@@ -331,7 +331,7 @@ export default function Navbar() {
 
             <nav
                 ref={navRef}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${scrolled ? 'bg-slate-950/98 shadow-2xl' : 'bg-slate-950/95'
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-1200 ${scrolled ? 'bg-slate-950/98 shadow-2xl' : 'bg-slate-950/95'
                     }`}
             >
                 <canvas
@@ -364,7 +364,6 @@ export default function Navbar() {
                                     <span className="bg-gradient-to-r from-sky-400 via-violet-500 to-pink-500 bg-clip-text text-transparent drop-shadow-lg animate-text-shimmer-premium">
                                         FDroots
                                     </span>
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer-elite" />
                                 </h1>
                                 <div className="flex items-center gap-1">
                                     <Terminal className="w-2.5 h-2.5 text-violet-400 animate-pulse" strokeWidth={2.5} />
@@ -407,9 +406,9 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                <div className={`lg:hidden transition-all duration-700 ease-out overflow-hidden ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+                <div className={`lg:hidden transition-all duration-1000 ease-in-out overflow-hidden ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
                     }`}>
-                    <div className="relative px-4 sm:px-6 pt-4 pb-6 space-y-2 bg-slate-950/98 border-t border-white/10 shadow-xl">
+                    <div className="relative px-4 sm:px-6 pt-4 pb-6 space-y-2 bg-slate-950 border-t border-white/10 shadow-xl">
                         <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.02)_1px,transparent_1px)] bg-[size:30px_30px]" />
 
                         {navItems.map((item, index) => {
