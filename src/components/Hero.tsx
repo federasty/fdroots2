@@ -178,25 +178,12 @@ export default function Hero() {
 
             <section
                 ref={heroRef}
-                className="relative w-full h-auto py-16 sm:py-20 md:py-24 lg:py-32 xl:min-h-screen xl:flex xl:items-center xl:justify-center overflow-hidden"
+                className="relative w-full h-auto pt-32 pb-16 sm:pt-36 sm:pb-20 md:pt-40 md:pb-24 lg:pt-44 lg:pb-32 xl:min-h-screen xl:flex xl:items-center xl:justify-center overflow-hidden"
             >
                 {/* Contenido Principal */}
                 <div className={`relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <div className="text-center space-y-5 sm:space-y-6 lg:space-y-7">
 
-                        {/* Badge Premium - Solo Desktop */}
-                        <div className="hidden md:flex justify-center animate-fade-in-up-smooth" style={{ animationDelay: '0.2s' }}>
-                            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full glass-elite-strong shadow-2xl group hover:scale-110 transition-all duration-500 border border-violet-400/40 animate-glow-pulse-elite">
-                                <div className="relative">
-                                    <div className="absolute inset-0 bg-violet-400 rounded-full blur-lg opacity-70 animate-pulse" />
-                                    <Zap className="relative w-4 h-4 text-violet-400" strokeWidth={3} fill="currentColor" />
-                                </div>
-                                <span className="text-xs font-black tracking-wider bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-                                    DISPONIBLE
-                                </span>
-                                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-lg shadow-emerald-400/80" />
-                            </div>
-                        </div>
 
                         {/* Título Principal Elite */}
                         <div className="space-y-3 sm:space-y-4 animate-fade-in-up-smooth" style={{ animationDelay: '0.3s' }}>
