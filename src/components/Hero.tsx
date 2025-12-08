@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Code2, Database, Layers, Cpu, Globe, Terminal, Server, Zap } from 'lucide-react';
+import { Code2, Database, Layers, Cpu, Globe, Server, Zap, Terminal } from 'lucide-react';
 
 export default function Hero() {
     const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
-    const [scrollY, setScrollY] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const heroRef = useRef<HTMLDivElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
         setIsVisible(true);
@@ -23,125 +21,9 @@ export default function Hero() {
             }
         };
 
-        const handleScroll = () => {
-            setScrollY(window.scrollY);
-        };
-
         window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const particles: Array<{
-            x: number;
-            y: number;
-            vx: number;
-            vy: number;
-            size: number;
-            color: string;
-            opacity: number;
-        }> = [];
-
-        const colors = [
-            'rgba(56, 189, 248, ',   // sky-400
-            'rgba(139, 92, 246, ',   // violet-500
-            'rgba(236, 72, 153, ',   // pink-500
-            'rgba(34, 211, 238, ',   // cyan-400
-            'rgba(251, 146, 60, ',   // orange-400
-            'rgba(16, 185, 129, ',   // emerald-500
-        ];
-
-        // Aumentar partículas a 150 para más densidad
-        for (let i = 0; i < 150; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 1.2,  // Velocidad más dinámica
-                vy: (Math.random() - 0.5) * 1.2,
-                size: Math.random() * 3.5 + 1.5,  // Tamaños más variados
-                color: colors[Math.floor(Math.random() * colors.length)],
-                opacity: Math.random() * 0.3 + 0.2,  // Opacidad reducida para no tapar texto
-            });
-        }
-
-        let animationId: number;
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach((p, i) => {
-                p.x += p.vx;
-                p.y += p.vy;
-
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-                // Dibujar partículas con glow
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-
-                // Glow effect
-                const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
-                gradient.addColorStop(0, p.color + p.opacity + ')');
-                gradient.addColorStop(0.5, p.color + (p.opacity * 0.5) + ')');
-                gradient.addColorStop(1, p.color + '0)');
-                ctx.fillStyle = gradient;
-                ctx.fill();
-
-                // Dibujar conexiones para formar figuras geométricas
-                particles.forEach((p2, j) => {
-                    if (i === j) return;
-                    const dx = p.x - p2.x;
-                    const dy = p.y - p2.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    // Aumentar distancia de conexión a 250px para más figuras
-                    if (dist < 250) {
-                        ctx.beginPath();
-
-                        // Líneas más visibles y con gradiente
-                        const lineOpacity = 0.15 * (1 - dist / 250);  // Líneas más sutiles
-                        const gradient = ctx.createLinearGradient(p.x, p.y, p2.x, p2.y);
-                        gradient.addColorStop(0, p.color + lineOpacity + ')');
-                        gradient.addColorStop(1, p2.color + lineOpacity + ')');
-
-                        ctx.strokeStyle = gradient;
-                        ctx.lineWidth = 1.5;  // Líneas más gruesas
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                });
-            });
-
-            animationId = requestAnimationFrame(animate);
-        };
-
-        animate();
-
-        const handleResize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            cancelAnimationFrame(animationId);
-            window.removeEventListener('resize', handleResize);
         };
     }, []);
 
@@ -296,27 +178,8 @@ export default function Hero() {
 
             <section
                 ref={heroRef}
-                className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 pt-20 sm:pt-24 md:pt-28"
-                style={{
-                    transform: `translateY(${scrollY * 0.3}px)`,
-                }}
+                className="relative w-full h-auto py-16 sm:py-20 md:py-24 lg:py-32 xl:min-h-screen xl:flex xl:items-center xl:justify-center overflow-hidden"
             >
-                {/* Canvas de Partículas Premium con Máscara */}
-                <canvas
-                    ref={canvasRef}
-                    className="absolute inset-0 pointer-events-none opacity-50"
-                    style={{
-                        maskImage: 'radial-gradient(ellipse 60% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.8) 70%, black 100%)',
-                        WebkitMaskImage: 'radial-gradient(ellipse 60% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.8) 70%, black 100%)',
-                    }}
-                />
-
-                {/* Fondo Premium Oscuro */}
-                <div className="absolute inset-0 overflow-hidden">
-                    {/* Grid Pattern Sutil */}
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
-                </div>
-
                 {/* Contenido Principal */}
                 <div className={`relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <div className="text-center space-y-5 sm:space-y-6 lg:space-y-7">
@@ -392,7 +255,6 @@ export default function Hero() {
                                 <div className="relative px-5 sm:px-7 py-2.5 sm:py-3 flex items-center justify-center gap-2">
                                     <Terminal className="w-4 h-4 text-violet-400 group-hover:text-violet-300 transition-colors duration-500 drop-shadow-lg" strokeWidth={2.5} />
                                     <span className="text-sm font-black text-white tracking-wide">Contacto</span>
-                                    
                                 </div>
                             </button>
                         </div>

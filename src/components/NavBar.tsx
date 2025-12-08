@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Code, Github, Linkedin, Mail, Home, Sparkles, Briefcase, User, MessageCircle, Terminal } from 'lucide-react';
+import { Menu, X, Code, Github, Linkedin, Home, Sparkles, Briefcase, User, MessageCircle, Terminal, Instagram } from 'lucide-react';
 
 interface NavItem {
     id: string;
@@ -58,7 +58,6 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
     const navRef = useRef<HTMLDivElement>(null);
-    const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -77,103 +76,6 @@ export default function Navbar() {
         }
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen]);
-
-    // Red neuronal de fondo
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        canvas.width = window.innerWidth;
-        canvas.height = 80;
-
-        const particles: Array<{
-            x: number;
-            y: number;
-            vx: number;
-            vy: number;
-            size: number;
-            color: string;
-            opacity: number;
-        }> = [];
-
-        const colors = [
-            'rgba(56, 189, 248, ',
-            'rgba(139, 92, 246, ',
-            'rgba(236, 72, 153, ',
-        ];
-
-        for (let i = 0; i < 30; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                size: Math.random() * 2 + 1,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                opacity: Math.random() * 0.3 + 0.2,
-            });
-        }
-
-        let animationId: number;
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach((p, i) => {
-                p.x += p.vx;
-                p.y += p.vy;
-
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
-                gradient.addColorStop(0, p.color + p.opacity + ')');
-                gradient.addColorStop(1, p.color + '0)');
-                ctx.fillStyle = gradient;
-                ctx.fill();
-
-                particles.forEach((p2, j) => {
-                    if (i === j) return;
-                    const dx = p.x - p2.x;
-                    const dy = p.y - p2.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 150) {
-                        ctx.beginPath();
-                        const lineOpacity = 0.1 * (1 - dist / 150);
-                        const gradient = ctx.createLinearGradient(p.x, p.y, p2.x, p2.y);
-                        gradient.addColorStop(0, p.color + lineOpacity + ')');
-                        gradient.addColorStop(1, p2.color + lineOpacity + ')');
-                        ctx.strokeStyle = gradient;
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                });
-            });
-
-            animationId = requestAnimationFrame(animate);
-        };
-
-        animate();
-
-        const handleResize = () => {
-            canvas.width = window.innerWidth;
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            cancelAnimationFrame(animationId);
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
 
     const handleNavClick = (item: NavItem) => {
         setActiveSection(item.id);
@@ -331,20 +233,15 @@ export default function Navbar() {
 
             <nav
                 ref={navRef}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-1200 ${scrolled ? 'bg-slate-950/98 shadow-2xl' : 'bg-slate-950/95'
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-1200 ${scrolled ? 'shadow-2xl' : ''
                     }`}
             >
-                <canvas
-                    ref={canvasRef}
-                    className="absolute inset-0 pointer-events-none opacity-40"
-                />
-
                 <div className="absolute top-0 left-0 right-0 h-[1px]">
                     <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-violet-500 to-pink-500 opacity-50" />
                     <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-violet-500 to-pink-500 blur-sm animate-pulse" />
                 </div>
 
-                <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 backdrop-blur-xl bg-slate-950/70 rounded-2xl my-2 border border-white/10">
                     <div className="flex items-center justify-between h-16">
                         <button
                             onClick={() => handleNavClick(navItems[0])}
@@ -386,7 +283,7 @@ export default function Navbar() {
                                 <div className="w-px h-4 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
                                 <SocialLink Icon={Linkedin} href="https://www.linkedin.com/in/federico-daniel-142b22349/" label="LinkedIn" color="text-blue-400" gradient="from-blue-400 to-cyan-400" />
                                 <div className="w-px h-4 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-                                <SocialLink Icon={Mail} href="mailto:federicodaniel7@gmail.com" label="Email" color="text-rose-400" gradient="from-rose-400 to-pink-400" />
+                                <SocialLink Icon={Instagram} href="https://www.instagram.com/fd_roots/" label="Instagram" color="text-purple-400" gradient="from-purple-400 via-pink-500 to-yellow-500" />
                             </div>
 
                             <button
@@ -461,7 +358,7 @@ export default function Navbar() {
                         <div className="flex items-center justify-center gap-2 pt-3 mt-2 border-t border-white/10">
                             <SocialLink Icon={Github} href="https://github.com/federasty" label="GitHub" color="text-slate-300" gradient="from-slate-400 to-slate-600" />
                             <SocialLink Icon={Linkedin} href="https://www.linkedin.com/in/federico-daniel-142b22349/" label="LinkedIn" color="text-blue-400" gradient="from-blue-400 to-cyan-400" />
-                            <SocialLink Icon={Mail} href="mailto:federicodaniel7@gmail.com" label="Email" color="text-rose-400" gradient="from-rose-400 to-pink-400" />
+                            <SocialLink Icon={Instagram} href="https://www.instagram.com/fd_roots/" label="Instagram" color="text-purple-400" gradient="from-purple-400 via-pink-500 to-yellow-500" />
                         </div>
                     </div>
                 </div>

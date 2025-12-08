@@ -1,17 +1,16 @@
 import NavBar from "./components/NavBar";
 import Hero from "./components/Hero";
-
-
-
+import Skills from "./components/Skills";
+import NeuralBackground from "./components/NeuralBackground";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <NeuralBackground intensity="medium">
       <NavBar />
-       <Hero />
-   
-
-    </div>
+      <Hero />
+      <Skills />
+      {/* Otros componentes */}
+    </NeuralBackground>
   );
 }
 
