@@ -13,6 +13,27 @@ interface Skill {
 
 const skills: Skill[] = [
     {
+        name: 'JavaScript',
+        iconPath: '/javascript.png',
+        gradient: 'from-amber-400 via-yellow-500 to-orange-500',
+        color: 'text-amber-400',
+        accentColor: '#fbbf24',
+        category: 'Frontend',
+        level: 98,
+        description: 'Lenguaje versátil y fundamental para desarrollo web moderno, desde manipulación del DOM hasta aplicaciones full-stack'
+    },
+   
+    {
+        name: 'TypeScript',
+        iconPath: '/tsLogo.png',
+        gradient: 'from-blue-400 via-purple-500 to-blue-600',
+        color: 'text-blue-400',
+        accentColor: '#6366f1',
+        category: 'Frontend',
+        level: 90,
+        description: 'Superset de JavaScript con tipado estático que mejora la calidad del código y facilita el mantenimiento de proyectos grandes'
+    },
+     {
         name: 'React',
         iconPath: '/react.png',
         gradient: 'from-cyan-400 via-blue-500 to-indigo-600',
@@ -23,26 +44,16 @@ const skills: Skill[] = [
         description: 'Framework declarativo para construir interfaces interactivas y componentes reutilizables con hooks y estado avanzado'
     },
     {
-        name: 'TypeScript',
-        iconPath: '/tsLogo.png',
-        gradient: 'from-indigo-400 via-purple-500 to-violet-600',
-        color: 'text-indigo-400',
-        accentColor: '#6366f1',
-        category: 'Frontend',
-        level: 90,
-        description: 'Superset de JavaScript con tipado estático que mejora la calidad del código y facilita el mantenimiento de proyectos grandes'
+        name: 'JWT',
+        iconPath: '/jwt.png',
+        gradient: 'from-pink-400 via-pink-500 to-rose-600',
+        color: 'text-purple-400',
+        accentColor: '#a855f7',
+        category: 'Backend',
+        level: 88,
+        description: 'Estándar abierto para autenticación y autorización segura mediante tokens JSON firmados digitalmente y verificables.'
     },
-    {
-        name: 'JavaScript',
-        iconPath: '/javascript.png',
-        gradient: 'from-amber-400 via-yellow-500 to-orange-500',
-        color: 'text-amber-400',
-        accentColor: '#fbbf24',
-        category: 'Frontend',
-        level: 98,
-        description: 'Lenguaje versátil y fundamental para desarrollo web moderno, desde manipulación del DOM hasta aplicaciones full-stack'
-    },
-    {
+     {
         name: 'CSS',
         iconPath: '/css.png',
         gradient: 'from-blue-400 via-sky-500 to-cyan-600',
@@ -51,16 +62,6 @@ const skills: Skill[] = [
         category: 'Frontend',
         level: 94,
         description: 'Lenguaje de estilos para diseñar interfaces web modernas con layouts responsive, animaciones y efectos visuales avanzados'
-    },
-    {
-        name: 'Tailwind CSS',
-        iconPath: '/tailwind.png',
-        gradient: 'from-sky-400 via-teal-500 to-cyan-600',
-        color: 'text-sky-400',
-        accentColor: '#0ea5e9',
-        category: 'Frontend',
-        level: 92,
-        description: 'Framework CSS utility-first que acelera el desarrollo con clases predefinidas para crear diseños modernos y responsivos'
     },
     {
         name: 'Node.js',
@@ -72,6 +73,16 @@ const skills: Skill[] = [
         level: 88,
         description: 'Entorno de ejecución JavaScript del lado del servidor, ideal para APIs REST, microservicios y aplicaciones en tiempo real'
     },
+        {
+        name: 'SQL',
+        iconPath: '/sql.png',
+        gradient: 'from-orange-600 via-red-600 to-rose-600',
+        color: 'text-rose-400',
+        accentColor: '#fb7185',
+        category: 'Database',
+        level: 90,
+        description: 'Lenguaje estándar para gestión de bases de datos relacionales, consultas complejas y optimización de rendimiento'
+    },
     {
         name: 'C#',
         iconPath: '/csharp.png',
@@ -82,15 +93,16 @@ const skills: Skill[] = [
         level: 85,
         description: 'Lenguaje robusto orientado a objetos para aplicaciones empresariales, servicios web y desarrollo con .NET Framework'
     },
+
     {
-        name: 'JWT',
-        iconPath: '/jwt.png',
-        gradient: 'from-purple-400 via-pink-500 to-rose-600',
-        color: 'text-purple-400',
-        accentColor: '#a855f7',
-        category: 'Backend',
-        level: 88,
-        description: 'Estándar abierto para autenticación y autorización segura mediante tokens JSON firmados digitalmente y verificables.'
+        name: 'Tailwind CSS',
+        iconPath: '/tailwind.png',
+        gradient: 'from-sky-400 via-teal-500 to-cyan-600',
+        color: 'text-sky-400',
+        accentColor: '#0ea5e9',
+        category: 'Frontend',
+        level: 92,
+        description: 'Framework CSS utility-first que acelera el desarrollo con clases predefinidas para crear diseños modernos y responsivos'
     },
     {
         name: 'MongoDB',
@@ -102,16 +114,7 @@ const skills: Skill[] = [
         level: 87,
         description: 'Base de datos NoSQL flexible y escalable con documentos JSON, perfecta para aplicaciones modernas con datos dinámicos'
     },
-    {
-        name: 'SQL',
-        iconPath: '/sql.png',
-        gradient: 'from-rose-400 via-red-500 to-pink-600',
-        color: 'text-rose-400',
-        accentColor: '#fb7185',
-        category: 'Database',
-        level: 90,
-        description: 'Lenguaje estándar para gestión de bases de datos relacionales, consultas complejas y optimización de rendimiento'
-    },
+
     {
         name: 'Git',
         iconPath: '/git.png',
@@ -125,8 +128,8 @@ const skills: Skill[] = [
     {
         name: 'GeneXus',
         iconPath: '/genexus.png',
-        gradient: 'from-pink-400 via-rose-500 to-red-600',
-        color: 'text-pink-400',
+        gradient: 'from-red-400 via-rose-500 to-red-600',
+        color: 'text-red-400',
         accentColor: '#f472b6',
         category: 'Full Stack',
         level: 80,
