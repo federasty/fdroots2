@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Code2, Database, Layers, Cpu, Globe, Server, Zap, Terminal } from 'lucide-react';
+import { Code2, Database, Layers, Cpu, Globe, Server, Terminal } from 'lucide-react';
 
 export default function Hero() {
     const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
@@ -246,8 +246,8 @@ export default function Hero() {
                             </button>
                         </div>
 
-                        {/* Skills Grid Elite Compacto */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 max-w-5xl mx-auto px-4 pt-4 sm:pt-6">
+                        {/* Skills Grid Elite - CARDS MÁS GRANDES */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-5 max-w-5xl lg:max-w-6xl mx-auto px-4 pt-4 sm:pt-6 lg:pt-10">
                             {skills.map((skill, index) => {
                                 const Icon = skill.icon;
                                 return (
@@ -258,7 +258,7 @@ export default function Hero() {
                                             animationDelay: `${0.9 + index * 0.1}s`,
                                         }}
                                     >
-                                        <div className="relative glass-elite rounded-xl p-3 sm:p-4 hover:glass-elite-strong transition-all duration-500 shadow-xl hover:shadow-2xl border border-white/15 hover:border-white/30 overflow-hidden">
+                                        <div className="relative glass-elite rounded-xl p-4 sm:p-5 lg:p-7 hover:glass-elite-strong transition-all duration-500 shadow-xl hover:shadow-2xl border border-white/15 hover:border-white/30 overflow-hidden">
 
                                             {/* Background Gradient Effect Premium */}
                                             <div className={`absolute inset-0 bg-gradient-to-br ${skill.gradient} opacity-0 group-hover:opacity-15 rounded-xl transition-opacity duration-500`} />
@@ -268,19 +268,19 @@ export default function Hero() {
                                             <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/0 via-white/15 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 skew-x-12" />
 
-                                            <div className="relative flex flex-col items-center gap-2">
-                                                <div className={`relative p-2 rounded-lg ${skill.bg} group-hover:scale-125 transition-transform duration-500 shadow-lg`}>
-                                                    <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${skill.color} group-hover:drop-shadow-2xl transition-all duration-500 animate-float-vertical`} strokeWidth={2.5} />
+                                            <div className="relative flex flex-col items-center gap-2.5 lg:gap-4">
+                                                <div className={`relative p-2.5 lg:p-4 rounded-lg ${skill.bg} group-hover:scale-125 transition-transform duration-500 shadow-lg`}>
+                                                    <Icon className={`w-6 h-6 sm:w-7 sm:h-7 lg:w-10 lg:h-10 ${skill.color} group-hover:drop-shadow-2xl transition-all duration-500 animate-float-vertical`} strokeWidth={2.5} />
                                                     <div className={`absolute inset-0 bg-gradient-to-r ${skill.gradient} opacity-0 group-hover:opacity-70 blur-xl transition-opacity duration-500 rounded-lg`} />
                                                 </div>
-                                                <span className={`text-xs font-black text-slate-400 group-hover:text-white transition-colors duration-500 text-center tracking-wide`}>
+                                                <span className={`text-xs sm:text-sm lg:text-base font-black text-slate-400 group-hover:text-white transition-colors duration-500 text-center tracking-wide`}>
                                                     {skill.label}
                                                 </span>
                                             </div>
 
                                             {/* Corner Accents Elite */}
-                                            <div className={`absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 rounded-tr-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 ${skill.color}`} />
-                                            <div className={`absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 rounded-bl-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 ${skill.color}`} />
+                                            <div className={`absolute top-0 right-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 border-t-2 border-r-2 rounded-tr-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 ${skill.color}`} />
+                                            <div className={`absolute bottom-0 left-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 border-b-2 border-l-2 rounded-bl-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 ${skill.color}`} />
 
                                             {/* Glow Effect */}
                                             <div className={`absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} style={{ boxShadow: `0 0 40px rgba(139, 92, 246, 0.4)` }} />
