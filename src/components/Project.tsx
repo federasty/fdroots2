@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, Code2, ExternalLink, Sparkles, CheckCircle } from 'lucide-react';
+import { Github, Code2, ExternalLink, Sparkles, CheckCircle, Hourglass } from 'lucide-react'; // Importamos Hourglass
 
-// Tipado del Proyecto para mayor claridad
+// Tipado del Proyecto (sin cambios)
 interface ProjectData {
   id: number;
   title: string;
@@ -12,8 +12,8 @@ interface ProjectData {
   tech: string[];
   github: string;
   demo: string;
-  host: string; 
-  status: 'Completado' | 'En Progreso' | 'Pausado'; 
+  host: string;
+  status: 'Completado' | 'En Progreso' | 'Pausado';
   gradient: string;
   accentGradient: string;
   glowColor: string;
@@ -27,11 +27,11 @@ const Project = () => {
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Proyectos actualizados con Estado 'Completado' y Host
+  // Proyectos actualizados con "La Pizzería" (ID 4)
   const projects: ProjectData[] = [
     {
       id: 1,
@@ -79,8 +79,8 @@ const Project = () => {
     {
       id: 3,
       title: "VFtransportes",
-      subtitle: "Soluciones de Transporte y Carga Pesada", // ⬅️ Opción 1 Aplicada
-      category: "Logística B2B", // ⬅️ Opción 1 Aplicada
+      subtitle: "Soluciones de Transporte y Carga Pesada",
+      category: "Logística ",
       description: "Empresa de transporte pesado dedicada a ofrecer soluciones confiables, seguras y eficientes para el traslado de carga de materiales de cantera",
       image: "/vf.png",
       tech: [
@@ -100,10 +100,34 @@ const Project = () => {
       accentGradient: "from-blue-400 via-indigo-500 to-violet-600",
       glowColor: "shadow-blue-500/50",
       accentColor: '#6366f1'
+    },
+    {
+      id: 4,
+      title: "La Pizzería",
+      subtitle: "Sistema de Pedidos Online",
+      category: "Full Stack",
+      description: "Sistema completo para la gestión de pedidos de una pizzería: menú dinámico, carrito de compras, seguimiento de pedidos y área de administración.",
+      image: "/lapizzeria.png",
+      tech: [
+        "Next.js",
+        "Prisma",
+        "PostgreSQL",
+        "Stripe",
+        "Tailwind CSS",
+        "Vercel"
+      ],
+      github: "https://github.com/tu_usuario/la-pizzeria", // Reemplazar con tu repo real
+      demo: "#", // En desarrollo, sin demo pública aún
+      host: "Vercel",
+      status: "En Progreso", // Estado "En Progreso"
+      gradient: "from-amber-500/20 via-yellow-500/20 to-orange-500/20",
+      accentGradient: "from-amber-400 via-yellow-500 to-orange-500",
+      glowColor: "shadow-amber-500/50",
+      accentColor: '#f59e0b' // Tailwind amber-500
     }
   ];
 
-  // --- Lógica de Hooks ---
+  // --- Lógica de Hooks (sin cambios) ---
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -161,21 +185,49 @@ const Project = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [isMobile]);
+  
+  // Función auxiliar para elegir el ícono de estado
+  const StatusIcon = ({ status }: { status: ProjectData['status'] }) => {
+    switch (status) {
+      case 'Completado':
+        return <CheckCircle className="w-4 h-4 text-green-400" />;
+      case 'En Progreso':
+        return <Hourglass className="w-4 h-4 text-amber-400 animate-spin-slow" />;
+      case 'Pausado':
+        return <Code2 className="w-4 h-4 text-red-400" />;
+      default:
+        return null;
+    }
+  };
+  
+  // Función auxiliar para elegir el color del texto de estado
+  const StatusTextColor = ({ status }: { status: ProjectData['status'] }) => {
+    switch (status) {
+      case 'Completado':
+        return 'text-green-400';
+      case 'En Progreso':
+        return 'text-amber-400';
+      case 'Pausado':
+        return 'text-red-400';
+      default:
+        return 'text-slate-400';
+    }
+  };
 
   return (
     <div ref={containerRef} className="relative min-h-screen text-white overflow-hidden py-12 sm:py-16 md:py-20 lg:py-32 px-3 sm:px-4 md:px-6 lg:px-8">
-      
-      {/* Progress Bar */}
+
+      {/* Progress Bar (sin cambios) */}
       <div className="fixed top-0 left-0 right-0 h-0.5 sm:h-1 bg-slate-800/50 z-50">
-        <div 
+        <div
           className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-300 will-change-transform"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
       <section ref={sectionRef} className="relative z-10">
-        
-        {/* Ambient Background Orbs */}
+
+        {/* Ambient Background Orbs (sin cambios) */}
         {!isMobile && (
           <>
             <div
@@ -195,19 +247,16 @@ const Project = () => {
           </>
         )}
 
-        {/* Hero Header */}
+        {/* Hero Header (sin cambios) */}
         <div className="max-w-7xl mx-auto mb-8 sm:mb-12 md:mb-16">
           <header
             className={`text-center space-y-3 sm:space-y-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
-            {/* Main Title */}
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight px-4">
               <span className="block bg-gradient-to-r from-sky-400 via-violet-500 to-pink-500 bg-clip-text text-transparent animate-text-shimmer">
                 Proyectos Destacados
               </span>
             </h2>
-
-            {/* Decorative Divider */}
             <div className="flex justify-center items-center gap-2 sm:gap-3 px-4" aria-hidden="true">
               <div className="w-12 sm:w-16 lg:w-20 h-px bg-gradient-to-r from-transparent via-sky-400/30 to-sky-400" />
               <div className="relative w-32 sm:w-40 lg:w-48 h-0.5 sm:h-1 rounded-full overflow-hidden">
@@ -216,8 +265,6 @@ const Project = () => {
               </div>
               <div className="w-12 sm:w-16 lg:w-20 h-px bg-gradient-to-l from-transparent via-pink-400/30 to-pink-400" />
             </div>
-
-            {/* Subtitle */}
             <p className="text-sm sm:text-base lg:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed px-4">
               Donde la{' '}
               <span className="bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 bg-clip-text text-transparent font-bold">
@@ -244,29 +291,29 @@ const Project = () => {
                   animation: `slideInUp 1s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.15}s both`
                 }}
               >
-                {/* Outer Glow */}
+                {/* Outer Glow (sin cambios) */}
                 <div className={`absolute -inset-0.5 bg-gradient-to-r ${project.accentGradient} rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 blur-lg sm:blur-xl transition-all duration-700 ${project.glowColor} will-change-transform`} />
-                
-                {/* Card Container */}
+
+                {/* Card Container (sin cambios) */}
                 <div className="relative h-full bg-gradient-to-br from-slate-900/90 to-slate-800/90 rounded-2xl sm:rounded-3xl border border-slate-700/50 overflow-hidden backdrop-blur-2xl transition-all duration-700 hover:border-slate-600 hover:shadow-2xl md:hover:scale-[1.02] md:hover:-translate-y-3 will-change-transform">
-                  
-                  {/* Gradient Overlay */}
+
+                  {/* Gradient Overlay (sin cambios) */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
-                  
-                  {/* Animated Border */}
+
+                  {/* Animated Border (sin cambios) */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                     <div className={`absolute inset-0 bg-gradient-to-r ${project.accentGradient} opacity-20 blur-2xl`} />
                   </div>
 
                   <div className="relative">
-                    {/* Image Section */}
+                    {/* Image Section (sin cambios) */}
                     <div className="relative h-64 sm:h-80 md:h-96 overflow-hidden">
-                      
-                      {/* Multiple Gradient Overlays */}
+
+                      {/* Multiple Gradient Overlays (sin cambios) */}
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent z-10" />
                       <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-40 transition-all duration-700 z-10`} />
-                      
-                      {/* Image */}
+
+                      {/* Image (sin cambios) */}
                       <div className="w-full h-full p-3 sm:p-4">
                         <img
                           src={project.image}
@@ -275,18 +322,22 @@ const Project = () => {
                           loading="lazy"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.src = '/api/placeholder/800/600';
+                            // Puedes cambiar esta imagen de placeholder por una que tú desees,
+                            // o una específica para cada proyecto.
+                            target.src = '/placeholder.png'; // Asegúrate de tener una imagen placeholder en public/
                           }}
                         />
                       </div>
 
-                      {/* Status Badge */}
+                      {/* Status Badge - MODIFICADO para usar StatusIcon y StatusTextColor */}
                       <div className="absolute top-3 sm:top-4 lg:top-6 right-3 sm:right-4 lg:right-6 z-20 flex items-center gap-1 transform transition-all duration-500 group-hover:scale-110">
-                        <CheckCircle className="w-4 h-4 text-green-400" />
-                        <span className="text-xs sm:text-sm font-bold text-green-400 tracking-wide">{project.status}</span>
+                        <StatusIcon status={project.status} />
+                        <span className={`text-xs sm:text-sm font-bold tracking-wide ${StatusTextColor({ status: project.status })}`}>
+                          {project.status}
+                        </span>
                       </div>
-                      
-                      {/* Category Badge */}
+
+                      {/* Category Badge (sin cambios) */}
                       <div className="absolute top-3 sm:top-4 lg:top-6 left-3 sm:left-4 lg:left-6 z-20 transform transition-all duration-500 group-hover:scale-110">
                         <div className={`px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 bg-gradient-to-r ${project.gradient} backdrop-blur-2xl rounded-xl sm:rounded-2xl border border-white/20 shadow-xl sm:shadow-2xl`}>
                           <span className="text-xs sm:text-sm font-bold text-white tracking-wide">{project.category}</span>
@@ -294,10 +345,10 @@ const Project = () => {
                       </div>
                     </div>
 
-                    {/* Content Section */}
+                    {/* Content Section (sin cambios) */}
                     <div className="relative p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-5 lg:space-y-6">
-                      
-                      {/* Title & Subtitle */}
+
+                      {/* Title & Subtitle (sin cambios) */}
                       <div className="space-y-1 sm:space-y-2">
                         <h3 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight transition-all duration-500 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:via-blue-200 group-hover:to-purple-300 group-hover:bg-clip-text">
                           {project.title}
@@ -307,12 +358,12 @@ const Project = () => {
                         </p>
                       </div>
 
-                      {/* Description */}
+                      {/* Description (sin cambios) */}
                       <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
                         {project.description}
                       </p>
 
-                      {/* Deployment Host */}
+                      {/* Deployment Host (sin cambios) */}
                       <div className="flex items-center gap-2">
                         <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
                         <span className="text-xs sm:text-sm font-bold text-slate-300 uppercase tracking-wider">
@@ -320,10 +371,10 @@ const Project = () => {
                         </span>
                       </div>
 
-                      {/* Divider */}
+                      {/* Divider (sin cambios) */}
                       <div className={`h-px bg-gradient-to-r ${project.accentGradient} opacity-20`} />
 
-                      {/* Tech Stack */}
+                      {/* Tech Stack (sin cambios) */}
                       <div className="space-y-3 sm:space-y-4">
                         <div className="flex items-center gap-2">
                           <Code2 className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
@@ -345,7 +396,7 @@ const Project = () => {
                         </div>
                       </div>
 
-                      {/* Premium Action Buttons */}
+                      {/* Premium Action Buttons (sin cambios en la estructura) */}
                       <div className="pt-2 sm:pt-3 lg:pt-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
                         {/* Ver Demo Button */}
                         <a
@@ -356,25 +407,27 @@ const Project = () => {
                           onMouseLeave={() => !isMobile && setHoveredButton(null)}
                           onTouchStart={() => setHoveredButton(`demo-${project.id}`)}
                           onTouchEnd={() => setTimeout(() => setHoveredButton(null), 300)}
-                          className="group/demo relative flex-1 px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 lg:py-3.5 bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-slate-600/50 overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 hover:shadow-2xl touch-manipulation will-change-transform"
+                          className={`group/demo relative flex-1 px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 lg:py-3.5 bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-slate-600/50 overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 hover:shadow-2xl touch-manipulation will-change-transform ${project.status !== 'Completado' ? 'cursor-not-allowed opacity-60' : ''}`}
                           style={{
-                            boxShadow: hoveredButton === `demo-${project.id}` 
+                            boxShadow: hoveredButton === `demo-${project.id}`
                               ? `0 0 30px ${project.accentColor}40, 0 0 60px ${project.accentColor}20`
                               : 'none',
                             WebkitTapHighlightColor: 'transparent'
                           }}
                           aria-label={`Ver demo de ${project.title} en ${project.host}`}
+                          // Deshabilita el click si no está completado
+                          onClick={(e) => project.status !== 'Completado' && e.preventDefault()}
                         >
                           {/* Animated Background */}
-                          <div 
-                            className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover/demo:opacity-100 group-active/demo:opacity-100 transition-all duration-500"
-                            style={{ 
-                              background: `linear-gradient(135deg, ${project.accentColor}20, ${project.accentColor}10, transparent)` 
+                          <div
+                            className={`absolute inset-0 bg-gradient-to-r opacity-0 group-hover/demo:opacity-100 group-active/demo:opacity-100 transition-all duration-500`}
+                            style={{
+                              background: `linear-gradient(135deg, ${project.accentColor}20, ${project.accentColor}10, transparent)`
                             }}
                           />
-                          
+
                           {/* Shine Effect */}
-                          <div 
+                          <div
                             className="absolute inset-0 opacity-0 group-hover/demo:opacity-100 transition-opacity duration-700"
                             style={{
                               background: `linear-gradient(135deg, transparent 0%, ${project.accentColor}30 50%, transparent 100%)`,
@@ -400,24 +453,26 @@ const Project = () => {
                               ))}
                             </>
                           )}
-                          
+
                           {/* Border Glow */}
-                          <div 
+                          <div
                             className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover/demo:opacity-100 group-active/demo:opacity-100 transition-opacity duration-500"
-                            style={{ 
-                              boxShadow: `inset 0 0 20px ${project.accentColor}30` 
+                            style={{
+                              boxShadow: `inset 0 0 20px ${project.accentColor}30`
                             }}
                           />
-                          
+
                           {/* Button Content */}
                           <div className="relative z-10 flex items-center justify-center gap-1.5 sm:gap-2">
                             <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/demo:scale-110 group-hover/demo:rotate-12" />
-                            <span className="font-bold text-xs sm:text-sm tracking-wide">Ver Proyecto</span>
+                            <span className="font-bold text-xs sm:text-sm tracking-wide">
+                              {project.status === 'Completado' ? 'Ver Proyecto' : 'Demo (Próx.)'}
+                            </span>
                             <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 opacity-0 group-hover/demo:opacity-100 group-active/demo:opacity-100 transition-all duration-300 group-hover/demo:animate-pulse" />
                           </div>
                         </a>
 
-                        {/* GitHub Button */}
+                        {/* GitHub Button (sin cambios en la estructura) */}
                         <a
                           href={project.github}
                           target="_blank"
@@ -428,7 +483,7 @@ const Project = () => {
                           onTouchEnd={() => setTimeout(() => setHoveredButton(null), 300)}
                           className="group/github relative flex-1 px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 lg:py-3.5 bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-slate-600/50 overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 hover:shadow-2xl touch-manipulation will-change-transform"
                           style={{
-                            boxShadow: hoveredButton === `github-${project.id}` 
+                            boxShadow: hoveredButton === `github-${project.id}`
                               ? `0 0 30px ${project.accentColor}40, 0 0 60px ${project.accentColor}20`
                               : 'none',
                             WebkitTapHighlightColor: 'transparent'
@@ -436,15 +491,15 @@ const Project = () => {
                           aria-label={`Ver código en GitHub de ${project.title}`}
                         >
                           {/* Animated Background */}
-                          <div 
+                          <div
                             className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover/github:opacity-100 group-active/github:opacity-100 transition-all duration-500"
-                            style={{ 
-                              background: `linear-gradient(135deg, ${project.accentColor}20, ${project.accentColor}10, transparent)` 
+                            style={{
+                              background: `linear-gradient(135deg, ${project.accentColor}20, ${project.accentColor}10, transparent)`
                             }}
                           />
-                          
+
                           {/* Shine Effect */}
-                          <div 
+                          <div
                             className="absolute inset-0 opacity-0 group-hover/github:opacity-100 transition-opacity duration-700"
                             style={{
                               background: `linear-gradient(135deg, transparent 0%, ${project.accentColor}30 50%, transparent 100%)`,
@@ -470,15 +525,15 @@ const Project = () => {
                               ))}
                             </>
                           )}
-                          
+
                           {/* Border Glow */}
-                          <div 
+                          <div
                             className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover/github:opacity-100 group-active/github:opacity-100 transition-opacity duration-500"
-                            style={{ 
-                              boxShadow: `inset 0 0 20px ${project.accentColor}30` 
+                            style={{
+                              boxShadow: `inset 0 0 20px ${project.accentColor}30`
                             }}
                           />
-                          
+
                           {/* Button Content */}
                           <div className="relative z-10 flex items-center justify-center gap-1.5 sm:gap-2">
                             <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/github:scale-110 group-hover/github:rotate-12" />
@@ -489,7 +544,7 @@ const Project = () => {
                       </div>
                     </div>
 
-                    {/* Bottom Accent Line */}
+                    {/* Bottom Accent Line (sin cambios) */}
                     <div className={`absolute bottom-0 left-0 right-0 h-1 sm:h-1.5 bg-gradient-to-r ${project.accentGradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left will-change-transform`} />
                   </div>
                 </div>
@@ -499,8 +554,10 @@ const Project = () => {
         </div>
       </section>
 
-      {/* Estilos CSS (Sin cambios) */}
+      {/* Estilos CSS - MODIFICACIÓN para un nuevo keyframe */}
       <style>{`
+        /* ... (tus keyframes existentes, sin cambios) ... */
+        
         @keyframes slideInUp {
           from {
             opacity: 0;
@@ -588,6 +645,17 @@ const Project = () => {
         .animate-float-reverse { 
           animation: float-reverse 25s ease-in-out infinite; 
         }
+        
+        /* Nuevo keyframe para el ícono de "En Progreso" */
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin-slow {
+          animation: spin-slow 4s linear infinite; /* Animación más lenta que la normal de spin */
+        }
+
 
         /* Optimizaciones de performance */
         @media (prefers-reduced-motion: reduce) {
