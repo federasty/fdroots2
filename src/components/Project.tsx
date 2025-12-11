@@ -80,16 +80,16 @@ const Project = () => {
       id: 3,
       title: "VFtransportes",
       subtitle: "Soluciones de Transporte y Carga Pesada",
-      category: "Logística ",
+      category: "UI Website ",
       description: "Empresa de transporte pesado dedicada a ofrecer soluciones confiables, seguras y eficientes para el traslado de carga de materiales de cantera",
       image: "/vf.png",
       tech: [
-        "React",
-        "TypeScript",
+        "React + TypeScript",
         "Tailwind CSS",
         "Framer Motion",
         "React Router",
         "Sendgrid",
+        "Vite" ,
         "Vercel"
       ],
       github: "https://github.com/federasty/vftransportes",
@@ -104,21 +104,22 @@ const Project = () => {
     {
       id: 4,
       title: "La Pizzería",
-      subtitle: "Sistema de Pedidos Online",
-      category: "Full Stack",
-      description: "Sistema completo para la gestión de pedidos de una pizzería: menú dinámico, carrito de compras, seguimiento de pedidos y área de administración.",
-      image: "/lapizzeria.png",
+      subtitle: "Sistema de Venta",
+      category: "UI Website",
+      description: "Sistema completo para la gestión de pedidos de una pizzería: informacion y pedidos de manera rapida y eficiente ",
+      image: "/la pizzeria.png",
       tech: [
-        "Next.js",
-        "Prisma",
-        "PostgreSQL",
-        "Stripe",
+        "TypeScript",
+        "Framer Motion",
+        "React",
         "Tailwind CSS",
-        "Vercel"
+        "React Router",
+        "Vite" , 
+        "Next.js"
       ],
-      github: "https://github.com/tu_usuario/la-pizzeria", // Reemplazar con tu repo real
+      github: "https://github.com/federasty/lapizzeria", // Reemplazar con tu repo real
       demo: "#", // En desarrollo, sin demo pública aún
-      host: "Vercel",
+      host: "En desarrollo",
       status: "En Progreso", // Estado "En Progreso"
       gradient: "from-amber-500/20 via-yellow-500/20 to-orange-500/20",
       accentGradient: "from-amber-400 via-yellow-500 to-orange-500",
@@ -280,7 +281,7 @@ const Project = () => {
 
         {/* Projects Grid - Mapeo de proyectos */}
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
             {projects.map((project, index) => (
               <div
                 key={project.id}
