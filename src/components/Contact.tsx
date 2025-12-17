@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Mail, Phone, MapPin, Send, Linkedin, Github, Code2, CheckCircle2, AlertCircle, Loader2, MessageCircle } from 'lucide-react';
+import { Mail, MapPin, Send, Linkedin, Github, Code2, CheckCircle2, AlertCircle, Loader2, MessageCircle } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
 interface FormData {

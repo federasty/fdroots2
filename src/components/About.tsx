@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import { Briefcase, Code, Zap } from 'lucide-react';
+import { Briefcase, Code, Zap, Cloud, Shield, Database } from 'lucide-react';
 
 // --- Tipos y Datos ---
 interface Highlight {
@@ -18,28 +18,48 @@ interface MousePosition {
 const highlights: Highlight[] = [
     {
         title: 'Arquitectura de Sistemas',
-        description: 'Especialista en análisis de requisitos y modelado de sistemas complejos. Transformo necesidades de negocio en arquitecturas escalables y mantenibles.',
+        description: 'Especialista en análisis de requisitos y modelado de sistemas complejos. Transformo necesidades de negocio en arquitecturas escalables y de alta disponibilidad.',
         icon: Briefcase,
         accentColor: '#8b5cf6',
         delay: 0.1,
     },
     {
         title: 'Ingeniería Full Stack',
-        description: 'Dominio transversal en ecosistemas modernos: desde frontends de alto rendimiento hasta backends resilientes. Coherencia técnica end-to-end.',
+        description: 'Dominio transversal en ecosistemas modernos: desde frontends reactivos de alto rendimiento hasta backends resilientes con microservicios.',
         icon: Code,
         accentColor: '#0ea5e9',
         delay: 0.2,
     },
     {
+        title: 'Cloud & Infrastructure',
+        description: 'Despliegue y optimización en entornos multi-cloud. Implementación experta de pipelines CI/CD y arquitecturas serverless eficientes.',
+        icon: Cloud,
+        accentColor: '#f43f5e',
+        delay: 0.3,
+    },
+    {
+        title: 'Calidad & Seguridad',
+        description: 'Compromiso total con el código limpio. Implementación de auditorías de seguridad, estándares OWASP y suites de pruebas automatizadas.',
+        icon: Shield,
+        accentColor: '#f59e0b',
+        delay: 0.4,
+    },
+    {
+        title: 'Estrategia de Datos',
+        description: 'Diseño avanzado de modelos SQL/NoSQL. Transformación de grandes volúmenes de datos en insights accionables para el crecimiento del negocio.',
+        icon: Database,
+        accentColor: '#ec4899',
+        delay: 0.5,
+    },
+    {
         title: 'Liderazgo y Ejecución',
-        description: 'Experiencia liderando ciclos completos de desarrollo (ideación a producción). Impulso equipos hacia la excelencia y entrega de valor mensurable.',
+        description: 'Dirección técnica de equipos multidisciplinarios bajo metodologías ágiles. Enfoque en la excelencia operativa y entrega continua de valor.',
         icon: Zap,
         accentColor: '#10b981',
-        delay: 0.3,
+        delay: 0.6,
     },
 ];
 
-// --- Componente de Tarjeta con Efecto 3D ---
 const HighlightCard3D: React.FC<{ highlight: Highlight }> = ({ highlight }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
@@ -64,48 +84,46 @@ const HighlightCard3D: React.FC<{ highlight: Highlight }> = ({ highlight }) => {
 
     const transformStyle = useMemo(() =>
         isHovered
-            ? `perspective(1000px) rotateX(${-mousePosition.y * 5}deg) rotateY(${mousePosition.x * 5}deg) translateZ(10px)`
-            : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)',
+            ? `perspective(1200px) rotateX(${-mousePosition.y * 7}deg) rotateY(${mousePosition.x * 7}deg) translateZ(20px)`
+            : 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0px)',
         [isHovered, mousePosition]
     );
 
-    const glowStyle = useMemo(() =>
-        isHovered
-            ? `radial-gradient(circle at ${mousePosition.x * 50 + 50}% ${mousePosition.y * 50 + 50}%, ${accentColor}30, transparent 70%)`
-            : 'radial-gradient(circle at 50% 50%, transparent, transparent 100%)',
-        [isHovered, mousePosition, accentColor]
-    );
-
     return (
-        <div className="animate-fade-in-up w-full max-w-3xl mx-auto" style={{ animationDelay: `${delay}s` }}>
+        <div className="animate-fade-in-up w-full" style={{ animationDelay: `${delay}s` }}>
             <article
                 ref={cardRef}
-                className="relative p-6 sm:p-8 rounded-3xl transition-all duration-300 ease-out cursor-pointer select-none group will-change-transform"
+                className="relative h-full p-8 sm:p-10 rounded-3xl transition-all duration-500 ease-out cursor-pointer group will-change-transform"
                 style={{
                     backgroundColor: 'rgba(15, 23, 42, 0.4)',
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    border: `1px solid ${accentColor}25`,
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: `1px solid ${accentColor}30`,
                     transform: transformStyle,
-                    boxShadow: isHovered
-                        ? `0 25px 50px -12px ${accentColor}50`
-                        : `0 10px 15px -3px rgba(0, 0, 0, 0.1)`,
+                    boxShadow: isHovered ? `0 25px 50px -12px ${accentColor}40` : `none`,
                 }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => { setIsHovered(false); setMousePosition({ x: 0, y: 0 }); }}
                 onMouseMove={handleMouseMove}
             >
-                <div className="absolute inset-0 rounded-3xl pointer-events-none transition-opacity duration-300"
-                    style={{ background: glowStyle, opacity: isHovered ? 1 : 0 }} />
+                {/* Glow dinámico más grande */}
+                <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ 
+                        background: `radial-gradient(600px circle at ${mousePosition.x * 50 + 50}% ${mousePosition.y * 50 + 50}%, ${accentColor}15, transparent 80%)` 
+                    }} />
 
-                <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                    <div className="p-3.5 rounded-2xl transition-all duration-300 group-hover:scale-110"
-                        style={{ backgroundColor: `${accentColor}18`, border: `1px solid ${accentColor}40` }}>
-                        <Icon className="w-8 h-8" style={{ color: accentColor }} />
+                <div className="relative z-10 flex flex-col items-start gap-6">
+                    <div className="p-4 rounded-2xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shrink-0"
+                        style={{ backgroundColor: `${accentColor}15`, border: `1px solid ${accentColor}30` }}>
+                        <Icon className="w-8 h-8 md:w-10 md:h-10" style={{ color: accentColor }} />
                     </div>
-                    <div className="text-center sm:text-left">
-                        <h3 className="text-xl sm:text-2xl font-black text-slate-100 mb-2">{title}</h3>
-                        <p className="text-sm sm:text-lg text-slate-400 leading-relaxed font-light">{description}</p>
+                    <div className="text-left space-y-3">
+                        <h3 className="text-xl sm:text-2xl font-bold text-slate-100 group-hover:text-white transition-colors tracking-tight">
+                            {title}
+                        </h3>
+                        <p className="text-base sm:text-lg text-slate-400 leading-relaxed font-light">
+                            {description}
+                        </p>
                     </div>
                 </div>
             </article>
@@ -113,7 +131,6 @@ const HighlightCard3D: React.FC<{ highlight: Highlight }> = ({ highlight }) => {
     );
 };
 
-// --- Componente Principal About ---
 const About: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
@@ -127,38 +144,30 @@ const About: React.FC = () => {
     }, []);
 
     return (
-        <section
-            ref={sectionRef}
-            className="relative min-h-screen overflow-hidden"
-            style={{
-                paddingTop: 'clamp(5rem, 12vw, 10rem)',
-                paddingBottom: 'clamp(10rem, 20vw, 15rem)',
-            }}
-        >
-            {/* Ambient Orbs */}
-            <div className="absolute pointer-events-none" style={{ top: '5%', left: '10%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%)', filter: 'blur(80px)', animation: 'float 20s infinite' }} />
-            <div className="absolute pointer-events-none" style={{ bottom: '15%', right: '10%', width: '450px', height: '450px', background: 'radial-gradient(circle, rgba(14, 165, 233, 0.04) 0%, transparent 70%)', filter: 'blur(100px)', animation: 'float-reverse 25s infinite' }} />
+        <section ref={sectionRef} className="relative min-h-screen overflow-hidden py-20 md:py-32">
+            {/* Orbes de fondo más grandes para acompañar el nuevo tamaño */}
+            <div className="absolute pointer-events-none opacity-40 top-0 left-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute pointer-events-none opacity-30 bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px]" />
 
-            <div className="relative max-w-5xl mx-auto px-6 z-10">
-                <header className={`text-center space-y-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter">
+            <div className="relative max-w-7xl mx-auto px-6 z-10">
+                <header className={`text-center space-y-6 mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-tight">
                         <span style={{
                             background: 'linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 50%, #ec4899 100%)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                             backgroundClip: 'text',
                         }}>
-                            Analista de Sistemas <br /> & Arquitecto de Software
+                            Analista de Sistemas <br className="hidden sm:block" /> & Arquitecto de Software
                         </span>
                     </h2>
-                    <p className="text-slate-400 max-w-xl mx-auto text-base sm:text-lg font-light leading-relaxed">
-                        Ingeniería de software de alto nivel enfocada en escalabilidad,
-                        rendimiento y arquitecturas empresariales modernas.
+                    <p className="text-slate-400 max-w-3xl mx-auto text-lg sm:text-xl font-light leading-relaxed">
+                        Ingeniería de software de alto impacto. Me especializo en construir soluciones robustas 
+                        que escalan al ritmo de las necesidades globales.
                     </p>
                 </header>
 
-                {/* CONTENEDOR DE CARDS - Ajustado el margen superior (mt-24 sm:mt-32) */}
-                <div className="mt-24 sm:mt-32 flex flex-col gap-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
                     {highlights.map((highlight) => (
                         <HighlightCard3D key={highlight.title} highlight={highlight} />
                     ))}
@@ -166,10 +175,11 @@ const About: React.FC = () => {
             </div>
 
             <style>{`
-                @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
-                @keyframes float-reverse { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-30px, 30px); } }
-                @keyframes fade-in-up { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-                .animate-fade-in-up { animation: fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+                @keyframes fade-in-up { 
+                    from { opacity: 0; transform: translateY(40px); } 
+                    to { opacity: 1; transform: translateY(0); } 
+                }
+                .animate-fade-in-up { animation: fade-in-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
             `}</style>
         </section>
     );
