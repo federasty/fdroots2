@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Code, Github, Linkedin, Home, Sparkles, Briefcase, User, MessageCircle, Terminal, Instagram } from 'lucide-react';
 
 interface NavItem {
@@ -20,6 +21,14 @@ const navItems: NavItem[] = [
         gradient: 'from-sky-400 via-blue-500 to-indigo-500'
     },
     {
+        id: 'about',
+        label: 'Sobre Mí',
+        path: '/sobre-mi',
+        icon: User,
+        color: 'text-amber-400',
+        gradient: 'from-amber-400 via-orange-500 to-rose-500'
+    },
+    {
         id: 'skills',
         label: 'Habilidades',
         path: '/habilidades',
@@ -36,14 +45,6 @@ const navItems: NavItem[] = [
         gradient: 'from-emerald-400 via-teal-500 to-cyan-500'
     },
     {
-        id: 'about',
-        label: 'Sobre Mí',
-        path: '/sobre-mi',
-        icon: User,
-        color: 'text-amber-400',
-        gradient: 'from-amber-400 via-orange-500 to-rose-500'
-    },
-    {
         id: 'contact',
         label: 'Contacto',
         path: '/contacto',
@@ -56,8 +57,16 @@ const navItems: NavItem[] = [
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [activeSection, setActiveSection] = useState('home');
+    const location = useLocation();
     const navRef = useRef<HTMLDivElement>(null);
+
+    // Determinar sección activa basada en la ruta actual
+    const getActiveSectionFromPath = (pathname: string) => {
+        const item = navItems.find(item => item.path === pathname);
+        return item ? item.id : 'home';
+    };
+
+    const activeSection = getActiveSectionFromPath(location.pathname);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -77,8 +86,13 @@ export default function Navbar() {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen]);
 
-    const handleNavClick = (item: NavItem) => {
-        setActiveSection(item.id);
+    // Cerrar menú móvil al cambiar de ruta
+    useEffect(() => {
+        setIsOpen(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [location.pathname]);
+
+    const handleNavClick = () => {
         setIsOpen(false);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -89,8 +103,9 @@ export default function Navbar() {
         const Icon = item.icon;
 
         return (
-            <button
-                onClick={() => handleNavClick(item)}
+            <Link
+                to={item.path}
+                onClick={handleNavClick}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 className="relative px-4 py-2.5 transition-all duration-500 group"
@@ -124,7 +139,7 @@ export default function Navbar() {
                 {isActive && (
                     <div className={`absolute inset-0 rounded-xl bg-gradient-to-r ${item.gradient} opacity-10 animate-ping-elite`} />
                 )}
-            </button>
+            </Link>
         );
     };
 
@@ -243,8 +258,9 @@ export default function Navbar() {
 
                 <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 backdrop-blur-xl bg-slate-950/70 rounded-2xl my-2 border border-white/10">
                     <div className="flex items-center justify-between h-16">
-                        <button
-                            onClick={() => handleNavClick(navItems[0])}
+                        <Link
+                            to="/"
+                            onClick={handleNavClick}
                             className="flex items-center gap-2.5 group relative z-10"
                         >
                             <div className="relative">
@@ -269,7 +285,7 @@ export default function Navbar() {
                                     </p>
                                 </div>
                             </div>
-                        </button>
+                        </Link>
 
                         <div className="hidden lg:flex items-center gap-1">
                             {navItems.map((item) => (
@@ -313,10 +329,11 @@ export default function Navbar() {
                             const Icon = item.icon;
 
                             return (
-                                <button
+                                <Link
                                     key={item.id}
-                                    onClick={() => handleNavClick(item)}
-                                    className={`relative w-full group overflow-hidden transition-all duration-500 rounded-xl ${isActive
+                                    to={item.path}
+                                    onClick={handleNavClick}
+                                    className={`relative w-full group overflow-hidden transition-all duration-500 rounded-xl block ${isActive
                                         ? 'glass-elite-strong shadow-xl scale-[1.01] border border-white/30'
                                         : 'glass-elite hover:glass-elite-strong hover:scale-[1.005] border border-white/15'
                                         } animate-scale-in-smooth`}
@@ -351,7 +368,7 @@ export default function Navbar() {
                                             </div>
                                         )}
                                     </div>
-                                </button>
+                                </Link>
                             );
                         })}
 

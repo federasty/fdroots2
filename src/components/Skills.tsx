@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 interface Skill {
     name: string;
-    iconPath: string; // Path to PNG image in public folder
+    iconPath: string;
     gradient: string;
     color: string;
     category: string;
@@ -22,7 +22,6 @@ const skills: Skill[] = [
         level: 98,
         description: 'Lenguaje versátil y fundamental para desarrollo web moderno, desde manipulación del DOM hasta aplicaciones full-stack'
     },
-   
     {
         name: 'TypeScript',
         iconPath: '/tsLogo.png',
@@ -33,7 +32,7 @@ const skills: Skill[] = [
         level: 90,
         description: 'Superset de JavaScript con tipado estático que mejora la calidad del código y facilita el mantenimiento de proyectos grandes'
     },
-     {
+    {
         name: 'React',
         iconPath: '/react.png',
         gradient: 'from-cyan-400 via-blue-500 to-indigo-600',
@@ -53,7 +52,7 @@ const skills: Skill[] = [
         level: 88,
         description: 'Estándar abierto para autenticación y autorización segura mediante tokens JSON firmados digitalmente y verificables.'
     },
-     {
+    {
         name: 'CSS',
         iconPath: '/css.png',
         gradient: 'from-blue-400 via-sky-500 to-cyan-600',
@@ -73,7 +72,7 @@ const skills: Skill[] = [
         level: 88,
         description: 'Entorno de ejecución JavaScript del lado del servidor, ideal para APIs REST, microservicios y aplicaciones en tiempo real'
     },
-        {
+    {
         name: 'SQL',
         iconPath: '/sql.png',
         gradient: 'from-orange-600 via-red-600 to-rose-600',
@@ -93,7 +92,6 @@ const skills: Skill[] = [
         level: 85,
         description: 'Lenguaje robusto orientado a objetos para aplicaciones empresariales, servicios web y desarrollo con .NET Framework'
     },
-
     {
         name: 'Tailwind CSS',
         iconPath: '/tailwind.png',
@@ -114,7 +112,6 @@ const skills: Skill[] = [
         level: 87,
         description: 'Base de datos NoSQL flexible y escalable con documentos JSON, perfecta para aplicaciones modernas con datos dinámicos'
     },
-
     {
         name: 'Git',
         iconPath: '/git.png',
@@ -138,214 +135,149 @@ const skills: Skill[] = [
 ];
 
 const SkillCard: React.FC<{ skill: Skill; index: number }> = ({ skill, index }) => {
-    const [isPressed, setIsPressed] = useState(false);
-    const [ripples, setRipples] = useState<Array<{ x: number; y: number; id: number }>>([]);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isActive, setIsActive] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
-    const fadeTimeoutRef = useRef<number | null>(null);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-    const handleInteractionStart = (e: React.MouseEvent | React.TouchEvent) => {
-        // Clear any pending fade timeout
-        if (fadeTimeoutRef.current) {
-            clearTimeout(fadeTimeoutRef.current);
-            fadeTimeoutRef.current = null;
-        }
-
-        setIsPressed(true);
-
-        // Create ripple effect with improved mobile edge handling
-        if (cardRef.current) {
-            const rect = cardRef.current.getBoundingClientRect();
-
-            // Get touch/click coordinates
-            let clientX: number;
-            let clientY: number;
-
-            if ('touches' in e) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
-
-            // Calculate position relative to card
-            let x = clientX - rect.left;
-            let y = clientY - rect.top;
-
-            // Clamp coordinates to card boundaries with padding (mobile optimization)
-            // This prevents ripple from starting at extreme edges
-            const padding = 10; // 10px padding from edges
-            x = Math.max(padding, Math.min(x, rect.width - padding));
-            y = Math.max(padding, Math.min(y, rect.height - padding));
-
-            const newRipple = { x, y, id: Date.now() };
-            setRipples((prev: Array<{ x: number; y: number; id: number }>) => [...prev, newRipple]);
-
-            // Remove ripple after animation (slower)
-            setTimeout(() => {
-                setRipples((prev: Array<{ x: number; y: number; id: number }>) => prev.filter((r: { x: number; y: number; id: number }) => r.id !== newRipple.id));
-            }, 1400);
-        }
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        setMousePosition({
+            x: ((e.clientX - rect.left) / rect.width) * 100,
+            y: ((e.clientY - rect.top) / rect.height) * 100,
+        });
     };
-
-    const handleInteractionEnd = () => {
-        // Gradual fade out - delay the state reset
-        fadeTimeoutRef.current = setTimeout(() => {
-            setIsPressed(false);
-        }, 400);
-    };
-
-    // Cleanup timeout on unmount
-    useEffect(() => {
-        return () => {
-            if (fadeTimeoutRef.current) {
-                clearTimeout(fadeTimeoutRef.current);
-            }
-        };
-    }, []);
 
     return (
         <article
             ref={cardRef}
-            className="relative animate-fade-in-up cursor-pointer select-none"
+            className="relative animate-fade-in-up group cursor-pointer"
             style={{
-                animationDelay: `${index * 0.08}s`,
-                touchAction: 'manipulation', // Optimizes touch interactions on mobile
-                WebkitTapHighlightColor: 'transparent', // Removes default mobile tap highlight
+                animationDelay: `${index * 0.06}s`,
             }}
-            onMouseDown={handleInteractionStart}
-            onMouseUp={handleInteractionEnd}
-            onMouseLeave={handleInteractionEnd}
-            onTouchStart={handleInteractionStart}
-            onTouchEnd={handleInteractionEnd}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => { setIsHovered(false); setIsActive(false); }}
+            onMouseMove={handleMouseMove}
+            onMouseDown={() => setIsActive(true)}
+            onMouseUp={() => setIsActive(false)}
+            onTouchStart={() => setIsActive(true)}
+            onTouchEnd={() => setIsActive(false)}
             role="button"
             tabIndex={0}
             aria-label={`${skill.name} - ${skill.description}`}
         >
-            {/* Outer Glow Border - Enhanced on press */}
+            {/* Subtle Outer Glow */}
             <div
-                className="absolute -inset-0.5 rounded-3xl transition-all duration-700 ease-out"
+                className="absolute -inset-0.5 rounded-2xl transition-all duration-500"
                 style={{
-                    background: `linear-gradient(135deg, ${skill.accentColor}30, transparent, ${skill.accentColor}20)`,
-                    opacity: isPressed ? 0.6 : 0.25,
-                    filter: isPressed ? 'blur(8px)' : 'blur(0px)',
+                    background: `linear-gradient(135deg, ${skill.accentColor}20, transparent, ${skill.accentColor}15)`,
+                    opacity: isHovered ? 0.4 : 0.2,
+                    filter: isHovered ? 'blur(6px)' : 'blur(0px)',
                 }}
             />
 
-            {/* Main Card Container - Transforms on press */}
+            {/* Main Card */}
             <div
-                className="relative bg-slate-900/50 backdrop-blur-xl rounded-3xl p-6 shadow-2xl transition-all duration-600 ease-out"
+                className="relative backdrop-blur-xl rounded-2xl p-5 sm:p-6 transition-all duration-300"
                 style={{
-                    borderColor: isPressed ? `${skill.accentColor}50` : `${skill.accentColor}25`,
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%)',
+                    borderColor: isHovered ? `${skill.accentColor}35` : `${skill.accentColor}20`,
                     borderWidth: '1px',
                     borderStyle: 'solid',
-                    // Enhanced scale for mobile - more pronounced feedback
-                    transform: isPressed ? 'scale(0.96)' : 'scale(1)',
-                    boxShadow: isPressed
-                        ? `0 0 30px ${skill.accentColor}40, 0 20px 25px -5px rgba(0, 0, 0, 0.3)`
-                        : '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-                    // Prevent overflow of ripple effects
-                    overflow: 'hidden',
+                    transform: isActive ? 'translateY(0px) scale(0.98)' : isHovered ? 'translateY(-4px) scale(1)' : 'translateY(0) scale(1)',
+                    opacity: isActive ? 0.9 : 1,
+                    boxShadow: isHovered
+                        ? `0 20px 40px -12px ${skill.accentColor}25, 0 0 0 1px ${skill.accentColor}15`
+                        : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                 }}
             >
-                {/* Ripple Effects */}
-                {ripples.map((ripple: { x: number; y: number; id: number }) => (
-                    <span
-                        key={ripple.id}
-                        className="absolute rounded-full animate-ripple pointer-events-none"
-                        style={{
-                            left: ripple.x,
-                            top: ripple.y,
-                            width: '20px',
-                            height: '20px',
-                            background: `radial-gradient(circle, ${skill.accentColor}60 0%, transparent 70%)`,
-                            transform: 'translate(-50%, -50%)',
-                        }}
-                    />
-                ))}
-
-                {/* Subtle Background Gradient - Enhanced on press */}
-                <div
-                    className={`absolute inset-0 bg-gradient-to-br ${skill.gradient} rounded-3xl pointer-events-none transition-opacity duration-700 ease-out`}
-                    style={{
-                        opacity: isPressed ? 0.12 : 0.05,
-                    }}
-                />
-
-                {/* Animated Shine Effect on Press */}
-                {isPressed && (
+                {/* Dynamic Mouse Glow */}
+                {isHovered && (
                     <div
-                        className="absolute inset-0 rounded-3xl pointer-events-none animate-shine"
+                        className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500"
                         style={{
-                            background: `linear-gradient(135deg, transparent 0%, ${skill.accentColor}20 50%, transparent 100%)`,
+                            background: `radial-gradient(400px circle at ${mousePosition.x}% ${mousePosition.y}%, ${skill.accentColor}10, transparent 60%)`,
                         }}
                     />
                 )}
 
-                {/* Card Content */}
+                {/* Subtle Background Gradient */}
+                <div
+                    className={`absolute inset-0 bg-gradient-to-br ${skill.gradient} rounded-2xl pointer-events-none transition-opacity duration-500`}
+                    style={{
+                        opacity: isHovered ? 0.08 : 0.04,
+                    }}
+                />
+
+                {/* Content */}
                 <div className="relative z-10 space-y-4">
-                    {/* Header: Icon and Category Badge */}
+                    {/* Header */}
                     <header className="flex items-center justify-between">
-                        {/* Icon Container - Glows on press */}
+                        {/* Icon */}
                         <div
-                            className="p-3 rounded-xl transition-all duration-600 ease-out"
+                            className="p-2.5 sm:p-3 rounded-xl transition-all duration-500"
                             style={{
-                                backgroundColor: isPressed ? `${skill.accentColor}20` : `${skill.accentColor}12`,
-                                borderColor: isPressed ? `${skill.accentColor}40` : `${skill.accentColor}25`,
+                                backgroundColor: isHovered ? `${skill.accentColor}15` : `${skill.accentColor}10`,
+                                borderColor: `${skill.accentColor}25`,
                                 borderWidth: '1px',
                                 borderStyle: 'solid',
-                                boxShadow: isPressed ? `0 0 20px ${skill.accentColor}30` : 'none',
                             }}
                         >
                             <img
                                 src={skill.iconPath}
                                 alt={`${skill.name} logo`}
-                                className="w-8 h-8 object-contain"
+                                className="w-7 h-7 sm:w-8 sm:h-8 object-contain transition-transform duration-500"
                                 style={{
-                                    transform: isPressed ? 'scale(1.1)' : 'scale(1)',
-                                    filter: isPressed ? `drop-shadow(0 0 8px ${skill.accentColor})` : 'none',
-                                    transition: 'transform 0.6s ease-out, filter 0.7s ease-out',
+                                    transform: isHovered ? 'scale(1.1) rotate(5deg)' : 'scale(1)',
                                 }}
                             />
                         </div>
 
-                        {/* Category Badge - Enhanced on press */}
+                        {/* Category Badge */}
                         <span
-                            className={`px-3 py-1 rounded-full text-xs font-bold ${skill.color} transition-all duration-600 ease-out`}
+                            className={`px-2.5 py-1 rounded-lg text-xs font-semibold ${skill.color} transition-all duration-500`}
                             style={{
-                                backgroundColor: isPressed ? `${skill.accentColor}20` : `${skill.accentColor}12`,
-                                borderColor: isPressed ? `${skill.accentColor}40` : `${skill.accentColor}25`,
+                                backgroundColor: `${skill.accentColor}12`,
+                                borderColor: `${skill.accentColor}25`,
                                 borderWidth: '1px',
                                 borderStyle: 'solid',
-                                boxShadow: isPressed ? `0 0 15px ${skill.accentColor}25` : 'none',
                             }}
                         >
                             {skill.category}
                         </span>
                     </header>
 
-                    {/* Skill Name - Brightens on press */}
+                    {/* Skill Name */}
                     <h3
-                        className={`text-xl font-bold bg-gradient-to-r ${skill.gradient} bg-clip-text text-transparent`}
+                        className={`text-lg sm:text-xl font-bold bg-gradient-to-r ${skill.gradient} bg-clip-text text-transparent transition-all duration-500`}
                         style={{
-                            filter: isPressed ? 'brightness(1.3)' : 'brightness(1)',
-                            transition: 'filter 0.7s ease-out',
+                            filter: isHovered ? 'brightness(1.2)' : 'brightness(1)',
                         }}
                     >
                         {skill.name}
                     </h3>
 
-                    {/* Description - Lightens on press */}
+                    {/* Description */}
                     <p
-                        className="text-sm leading-relaxed"
+                        className="text-xs sm:text-sm leading-relaxed transition-colors duration-500"
                         style={{
-                            color: isPressed ? '#cbd5e1' : '#94a3b8',
-                            transition: 'color 0.7s ease-out',
+                            color: isHovered ? '#cbd5e1' : '#94a3b8',
                         }}
                     >
                         {skill.description}
                     </p>
                 </div>
+
+                {/* Corner Accents */}
+                <div
+                    className="absolute top-0 right-0 w-12 h-12 border-t border-r opacity-0 group-hover:opacity-25 rounded-tr-2xl transition-opacity duration-500"
+                    style={{ borderColor: skill.accentColor }}
+                />
+                <div
+                    className="absolute bottom-0 left-0 w-12 h-12 border-b border-l opacity-0 group-hover:opacity-25 rounded-bl-2xl transition-opacity duration-500"
+                    style={{ borderColor: skill.accentColor }}
+                />
             </div>
         </article>
     );
@@ -396,15 +328,10 @@ export default function Skills() {
     return (
         <>
             <style>{`
-                /* Mobile-specific optimizations */
-                @media (hover: none) and (pointer: coarse) {
-                    .animate-fade-in-up {
-                        -webkit-user-select: none;
-                        -webkit-touch-callout: none;
-                        -webkit-tap-highlight-color: transparent;
-                    }
-                }
-
+                /* ========================================
+                   ULTRA PREMIUM ANIMATIONS
+                   ======================================== */
+                
                 @keyframes fade-in-up {
                     from { 
                         opacity: 0; 
@@ -417,18 +344,17 @@ export default function Skills() {
                 }
                 
                 .animate-fade-in-up { 
-                    animation: fade-in-up 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                    animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
                     opacity: 0;
                 }
 
                 @keyframes text-shimmer {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
+                    0% { background-position: -200% center; }
+                    100% { background-position: 200% center; }
                 }
                 
                 .animate-text-shimmer { 
-                    animation: text-shimmer 6s ease-in-out infinite; 
+                    animation: text-shimmer 8s linear infinite; 
                     background-size: 200% auto; 
                 }
 
@@ -438,121 +364,98 @@ export default function Skills() {
                 }
                 
                 .animate-shimmer { 
-                    animation: shimmer 3s linear infinite; 
+                    animation: shimmer 4s linear infinite; 
                     background-size: 200% 100%; 
                 }
 
-                @keyframes float {
+                @keyframes float-gentle {
                     0%, 100% { transform: translate(0, 0); }
-                    50% { transform: translate(15px, -15px); }
+                    50% { transform: translate(10px, -10px); }
                 }
                 
-                .animate-float { 
-                    animation: float 20s ease-in-out infinite; 
+                .animate-float-gentle { 
+                    animation: float-gentle 20s ease-in-out infinite; 
                 }
 
-                @keyframes float-reverse {
+                @keyframes float-gentle-reverse {
                     0%, 100% { transform: translate(0, 0); }
-                    50% { transform: translate(-15px, 15px); }
+                    50% { transform: translate(-10px, 10px); }
                 }
                 
-                .animate-float-reverse { 
-                    animation: float-reverse 25s ease-in-out infinite; 
+                .animate-float-gentle-reverse { 
+                    animation: float-gentle-reverse 25s ease-in-out infinite; 
                 }
 
-                @keyframes ripple {
-                    0% {
-                        width: 20px;
-                        height: 20px;
-                        opacity: 1;
-                    }
-                    100% {
-                        width: 350px;
-                        height: 350px;
-                        opacity: 0;
-                    }
-                }
+                /* ========================================
+                   ACCESSIBILITY
+                   ======================================== */
                 
-                .animate-ripple {
-                    animation: ripple 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-                }
-
-                @keyframes shine {
-                    0% {
-                        transform: translateX(-100%) translateY(-100%) rotate(30deg);
-                        opacity: 0;
+                @media (prefers-reduced-motion: reduce) {
+                    *,
+                    *::before,
+                    *::after {
+                        animation-duration: 0.01ms !important;
+                        animation-iteration-count: 1 !important;
+                        transition-duration: 0.01ms !important;
                     }
-                    50% {
-                        opacity: 1;
-                    }
-                    100% {
-                        transform: translateX(100%) translateY(100%) rotate(30deg);
-                        opacity: 0;
-                    }
-                }
-                
-                .animate-shine {
-                    animation: shine 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
                 }
             `}</style>
 
             <section
                 ref={sectionRef}
-                className="relative min-h-screen py-20 sm:py-24 lg:py-32 overflow-hidden"
+                className="relative min-h-screen pt-20 sm:pt-24 md:pt-28 pb-16 sm:pb-20 md:pb-24 overflow-hidden"
                 aria-labelledby="skills-heading"
             >
-                {/* Ambient Background Orbs */}
+                {/* Ultra Subtle Ambient Background */}
                 <div
-                    className="absolute top-20 left-10 w-[400px] h-[400px] bg-gradient-to-r from-violet-500/6 via-purple-500/4 to-fuchsia-500/6 rounded-full blur-3xl animate-float pointer-events-none"
+                    className="absolute top-20 left-10 w-[500px] h-[500px] bg-gradient-to-r from-violet-500/5 via-purple-500/3 to-fuchsia-500/5 rounded-full blur-3xl animate-float-gentle pointer-events-none"
                     style={{
-                        transform: `translate(${mousePosition.x * 0.015}px, ${mousePosition.y * 0.015}px)`,
+                        transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
                     }}
                     aria-hidden="true"
                 />
                 <div
-                    className="absolute top-40 right-20 w-[450px] h-[450px] bg-gradient-to-r from-cyan-500/5 via-blue-500/3 to-indigo-500/5 rounded-full blur-3xl animate-float-reverse pointer-events-none"
+                    className="absolute top-40 right-20 w-[450px] h-[450px] bg-gradient-to-r from-cyan-500/4 via-blue-500/2 to-indigo-500/4 rounded-full blur-3xl animate-float-gentle-reverse pointer-events-none"
                     style={{
-                        transform: `translate(${-mousePosition.x * 0.015}px, ${-mousePosition.y * 0.015}px)`,
+                        transform: `translate(${-mousePosition.x * 0.01}px, ${-mousePosition.y * 0.01}px)`,
                     }}
                     aria-hidden="true"
                 />
 
-                {/* Dark Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-radial from-transparent via-slate-950/70 to-slate-950/90 pointer-events-none" aria-hidden="true" />
+                {/* Subtle Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/50 pointer-events-none" aria-hidden="true" />
 
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Section Header */}
                     <header
-                        className={`text-center space-y-4 mb-12 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                        className={`text-center space-y-5 sm:space-y-6 mb-12 sm:mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                     >
                         {/* Main Title */}
-                        <h2 id="skills-heading" className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">
-                            <span className="block bg-gradient-to-r from-sky-400 via-violet-500 to-pink-500 bg-clip-text text-transparent animate-text-shimmer">
+                        <h2 id="skills-heading" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] px-4">
+                            <span className="block bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 bg-clip-text text-transparent animate-text-shimmer">
                                 Habilidades & Tecnologías
                             </span>
                         </h2>
 
-                        {/* Decorative Divider */}
-                        <div className="flex justify-center items-center gap-3" aria-hidden="true">
-                            <div className="w-20 h-px bg-gradient-to-r from-transparent via-sky-400/30 to-sky-400" />
-                            <div className="relative w-48 h-1 rounded-full overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-r from-sky-500 via-violet-500 to-pink-500 opacity-40" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 animate-shimmer" />
+                        {/* Refined Decorative Line */}
+                        <div className="flex justify-center items-center gap-4 mt-4" aria-hidden="true">
+                            <div className="w-20 sm:w-32 h-px bg-gradient-to-r from-transparent via-violet-400/40 to-violet-400/60" />
+                            <div className="relative w-2 h-2 rounded-full bg-violet-400/60">
+                                <div className="absolute inset-0 rounded-full bg-violet-400/40 animate-ping" style={{ animationDuration: '3s' }} />
                             </div>
-                            <div className="w-20 h-px bg-gradient-to-l from-transparent via-pink-400/30 to-pink-400" />
+                            <div className="w-20 sm:w-32 h-px bg-gradient-to-l from-transparent via-violet-400/40 to-violet-400/60" />
                         </div>
 
                         {/* Subtitle */}
-                        <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-sm sm:text-base md:text-lg text-slate-400/90 max-w-2xl mx-auto leading-relaxed font-medium px-4">
                             Dominio de tecnologías modernas para crear{' '}
-                            <span className="bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 bg-clip-text text-transparent font-bold">
-                                soluciones excepcionales
-                            </span>
+                            <span className="text-white font-semibold">soluciones excepcionales</span>
+                            {' '}que impulsan el éxito empresarial
                         </p>
                     </header>
 
                     {/* Skills Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
                         {skills.map((skill, index) => (
                             <SkillCard key={skill.name} skill={skill} index={index} />
                         ))}

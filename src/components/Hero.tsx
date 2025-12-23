@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Code2, Database, Layers, Cpu, Globe, Server, Terminal } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Code2, Database, Layers, Cpu, Globe, Server, Terminal, Sparkles } from 'lucide-react';
 
 export default function Hero() {
     const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
@@ -28,262 +29,407 @@ export default function Hero() {
     }, []);
 
     const skills = [
-        { icon: Code2, label: 'Frontend', gradient: 'from-sky-400 via-blue-500 to-indigo-500', color: 'text-sky-400', bg: 'bg-sky-400/15' },
-        { icon: Database, label: 'Backend', gradient: 'from-violet-400 via-purple-500 to-fuchsia-500', color: 'text-violet-400', bg: 'bg-violet-400/15' },
-        { icon: Layers, label: 'Full Stack', gradient: 'from-emerald-400 via-teal-500 to-cyan-500', color: 'text-emerald-400', bg: 'bg-emerald-400/15' },
-        { icon: Cpu, label: 'Architecture', gradient: 'from-amber-400 via-orange-500 to-rose-500', color: 'text-amber-400', bg: 'bg-amber-400/15' },
-        { icon: Globe, label: 'APIs', gradient: 'from-pink-400 via-rose-500 to-red-500', color: 'text-pink-400', bg: 'bg-pink-400/15' },
-        { icon: Server, label: 'DevOps', gradient: 'from-cyan-400 via-sky-500 to-blue-500', color: 'text-cyan-400', bg: 'bg-cyan-400/15' },
+        { icon: Code2, label: 'Frontend', gradient: 'from-sky-400 via-blue-500 to-indigo-500', color: 'text-sky-400', bg: 'bg-sky-400/10' },
+        { icon: Database, label: 'Backend', gradient: 'from-violet-400 via-purple-500 to-fuchsia-500', color: 'text-violet-400', bg: 'bg-violet-400/10' },
+        { icon: Layers, label: 'Full Stack', gradient: 'from-emerald-400 via-teal-500 to-cyan-500', color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
+        { icon: Cpu, label: 'Architecture', gradient: 'from-amber-400 via-orange-500 to-rose-500', color: 'text-amber-400', bg: 'bg-amber-400/10' },
+        { icon: Globe, label: 'APIs', gradient: 'from-pink-400 via-rose-500 to-red-500', color: 'text-pink-400', bg: 'bg-pink-400/10' },
+        { icon: Server, label: 'DevOps', gradient: 'from-cyan-400 via-sky-500 to-blue-500', color: 'text-cyan-400', bg: 'bg-cyan-400/10' },
     ];
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
         <>
             <style>{`
-        @keyframes float-smooth {
-          0%, 100% { transform: translate(0, 0) rotate(0deg); }
-          33% { transform: translate(30px, -30px) rotate(3deg); }
-          66% { transform: translate(-20px, 20px) rotate(-2deg); }
+        /* ========================================
+           ULTRA PREMIUM ANIMATIONS - SUBTLE & REFINED
+           ======================================== */
+        
+        /* Gentle Floating Animation */
+        @keyframes float-gentle {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
         }
-        .animate-float-smooth { animation: float-smooth 20s ease-in-out infinite; }
-
-        @keyframes float-smooth-reverse {
-          0%, 100% { transform: translate(0, 0) rotate(0deg); }
-          33% { transform: translate(-30px, 30px) rotate(-3deg); }
-          66% { transform: translate(20px, -20px) rotate(2deg); }
-        }
-        .animate-float-smooth-reverse { animation: float-smooth-reverse 25s ease-in-out infinite; }
-
-        @keyframes glow-pulse-elite {
-          0%, 100% { 
-            box-shadow: 
-              0 0 30px rgba(139, 92, 246, 0.4),
-              0 0 60px rgba(139, 92, 246, 0.2),
-              inset 0 0 20px rgba(139, 92, 246, 0.1);
-          }
-          50% { 
-            box-shadow: 
-              0 0 50px rgba(139, 92, 246, 0.6),
-              0 0 100px rgba(139, 92, 246, 0.4),
-              inset 0 0 30px rgba(139, 92, 246, 0.2);
-          }
-        }
-        .animate-glow-pulse-elite { animation: glow-pulse-elite 3s ease-in-out infinite; }
-
-        @keyframes text-shimmer-premium {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .animate-text-shimmer-premium { 
-          animation: text-shimmer-premium 5s ease infinite; 
-          background-size: 200% auto; 
+        .animate-float-gentle { 
+          animation: float-gentle 4s ease-in-out infinite; 
         }
 
-        @keyframes bounce-smooth {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-12px); }
-        }
-        .animate-bounce-smooth { animation: bounce-smooth 2.5s ease-in-out infinite; }
-
-        @keyframes pulse-ring-elite {
-          0% { transform: scale(0.9); opacity: 0.9; }
-          100% { transform: scale(1.5); opacity: 0; }
-        }
-        .animate-pulse-ring-elite { animation: pulse-ring-elite 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-
-        @keyframes fade-in-up-smooth {
-          from { opacity: 0; transform: translateY(50px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up-smooth { animation: fade-in-up-smooth 1s ease-out forwards; }
-
-        @keyframes gradient-flow {
+        /* Smooth Gradient Shift */
+        @keyframes gradient-shift {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
         }
-        .animate-gradient-flow { 
-          animation: gradient-flow 6s ease infinite; 
+        .animate-gradient-shift { 
+          animation: gradient-shift 8s ease infinite; 
           background-size: 200% 200%; 
         }
 
-        @keyframes shimmer-elite {
+        /* Subtle Glow Pulse */
+        @keyframes glow-subtle {
+          0%, 100% { 
+            box-shadow: 
+              0 0 20px rgba(139, 92, 246, 0.15),
+              0 0 40px rgba(139, 92, 246, 0.08);
+          }
+          50% { 
+            box-shadow: 
+              0 0 30px rgba(139, 92, 246, 0.25),
+              0 0 60px rgba(139, 92, 246, 0.12);
+          }
+        }
+        .animate-glow-subtle { 
+          animation: glow-subtle 4s ease-in-out infinite; 
+        }
+
+        /* Elegant Text Shimmer */
+        @keyframes text-shimmer {
           0% { background-position: -200% center; }
           100% { background-position: 200% center; }
         }
-        .animate-shimmer-elite { 
-          animation: shimmer-elite 2.5s linear infinite; 
-          background-size: 200% 100%; 
+        .animate-text-shimmer { 
+          animation: text-shimmer 8s linear infinite; 
+          background-size: 200% auto; 
         }
 
-        @keyframes scale-in-smooth {
-          from { transform: scale(0.95); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
+        /* Smooth Fade In Up */
+        @keyframes fade-in-up {
+          from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
         }
-        .animate-scale-in-smooth { animation: scale-in-smooth 0.8s ease-out forwards; }
-
-        @keyframes border-glow {
-          0%, 100% { border-color: rgba(139, 92, 246, 0.4); }
-          50% { border-color: rgba(139, 92, 246, 0.9); }
+        .animate-fade-in-up { 
+          animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
         }
-        .animate-border-glow { animation: border-glow 2s ease-in-out infinite; }
 
-        .glass-elite {
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
-          backdrop-filter: blur(30px) saturate(180%);
-          -webkit-backdrop-filter: blur(30px) saturate(180%);
+        /* Refined Scale In */
+        @keyframes scale-in {
+          from { 
+            transform: scale(0.96); 
+            opacity: 0; 
+          }
+          to { 
+            transform: scale(1); 
+            opacity: 1; 
+          }
+        }
+        .animate-scale-in { 
+          animation: scale-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+
+        /* Delicate Shine Effect */
+        @keyframes shine-delicate {
+          0% { transform: translateX(-100%) skewX(-15deg); }
+          100% { transform: translateX(200%) skewX(-15deg); }
+        }
+        .animate-shine-delicate { 
+          animation: shine-delicate 3s ease-in-out infinite; 
+        }
+
+        /* Subtle Border Glow */
+        @keyframes border-glow-soft {
+          0%, 100% { border-color: rgba(139, 92, 246, 0.2); }
+          50% { border-color: rgba(139, 92, 246, 0.4); }
+        }
+        .animate-border-glow-soft { 
+          animation: border-glow-soft 3s ease-in-out infinite; 
+        }
+
+        /* Icon Rotate Gentle */
+        @keyframes rotate-gentle {
+          0%, 100% { transform: rotate(0deg); }
+          50% { transform: rotate(5deg); }
+        }
+        .animate-rotate-gentle { 
+          animation: rotate-gentle 6s ease-in-out infinite; 
+        }
+
+        /* Particle Float */
+        @keyframes particle-float {
+          0%, 100% { 
+            transform: translate(0, 0) scale(1); 
+            opacity: 0.3; 
+          }
+          50% { 
+            transform: translate(10px, -10px) scale(1.1); 
+            opacity: 0.6; 
+          }
+        }
+        .animate-particle-float { 
+          animation: particle-float 5s ease-in-out infinite; 
+        }
+
+        /* ========================================
+           PREMIUM GLASS MORPHISM
+           ======================================== */
+        
+        .glass-premium {
+          background: linear-gradient(
+            135deg, 
+            rgba(255, 255, 255, 0.08) 0%, 
+            rgba(255, 255, 255, 0.04) 100%
+          );
+          backdrop-filter: blur(24px) saturate(180%);
+          -webkit-backdrop-filter: blur(24px) saturate(180%);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-premium-strong {
+          background: linear-gradient(
+            135deg, 
+            rgba(255, 255, 255, 0.12) 0%, 
+            rgba(255, 255, 255, 0.06) 100%
+          );
+          backdrop-filter: blur(32px) saturate(200%);
+          -webkit-backdrop-filter: blur(32px) saturate(200%);
           border: 1px solid rgba(255, 255, 255, 0.18);
         }
 
-        .glass-elite-strong {
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.09) 100%);
-          backdrop-filter: blur(40px) saturate(200%);
-          -webkit-backdrop-filter: blur(40px) saturate(200%);
-          border: 1px solid rgba(255, 255, 255, 0.25);
-        }
-
-        .text-glow-elite {
+        /* ========================================
+           REFINED TEXT EFFECTS
+           ======================================== */
+        
+        .text-glow-soft {
           text-shadow: 
-            0 0 40px rgba(139, 92, 246, 0.6),
-            0 0 80px rgba(139, 92, 246, 0.4),
-            0 0 120px rgba(139, 92, 246, 0.2);
+            0 0 30px rgba(139, 92, 246, 0.3),
+            0 0 60px rgba(139, 92, 246, 0.15);
         }
 
-        .perspective-elite {
-          transform-style: preserve-3d;
-          transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+        .text-shadow-premium {
+          text-shadow: 
+            0 2px 4px rgba(0, 0, 0, 0.1),
+            0 4px 8px rgba(0, 0, 0, 0.08);
         }
 
-        .perspective-elite:hover {
-          transform: translateY(-15px) rotateX(10deg) scale(1.08);
+        /* ========================================
+           SOPHISTICATED HOVER EFFECTS
+           ======================================== */
+        
+        .hover-lift {
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes float-vertical {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-15px); }
+        .hover-lift:hover {
+          transform: translateY(-8px) scale(1.02);
         }
-        .animate-float-vertical { animation: float-vertical 3s ease-in-out infinite; }
 
-        @keyframes rotate-slow-elite {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+        .hover-glow {
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .animate-rotate-slow-elite { animation: rotate-slow-elite 60s linear infinite; }
 
-        @keyframes slide-shine {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
+        .hover-glow:hover {
+          box-shadow: 
+            0 0 30px rgba(139, 92, 246, 0.3),
+            0 0 60px rgba(139, 92, 246, 0.15),
+            0 20px 40px rgba(0, 0, 0, 0.2);
         }
-        .animate-slide-shine { animation: slide-shine 3s ease-in-out infinite; }
+
+        /* ========================================
+           DECORATIVE ELEMENTS
+           ======================================== */
+        
+        .gradient-border {
+          position: relative;
+        }
+
+        .gradient-border::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          padding: 1px;
+          background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(236, 72, 153, 0.4));
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          opacity: 0;
+          transition: opacity 0.4s ease;
+        }
+
+        .gradient-border:hover::before {
+          opacity: 1;
+        }
+
+        /* ========================================
+           RESPONSIVE OPTIMIZATIONS
+           ======================================== */
+        
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
       `}</style>
 
             <section
                 ref={heroRef}
                 className="relative w-full h-auto pt-32 pb-16 sm:pt-36 sm:pb-20 md:pt-40 md:pb-24 lg:pt-44 lg:pb-32 xl:min-h-screen xl:flex xl:items-center xl:justify-center overflow-hidden"
             >
-                {/* Contenido Principal */}
+                {/* Ambient Background Gradient - Ultra Subtle */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div 
+                        className="absolute w-[600px] h-[600px] rounded-full opacity-[0.08] blur-3xl animate-gradient-shift"
+                        style={{
+                            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, transparent 70%)',
+                            top: `${mousePosition.y}%`,
+                            left: `${mousePosition.x}%`,
+                            transform: 'translate(-50%, -50%)',
+                            transition: 'top 0.3s ease-out, left 0.3s ease-out',
+                        }}
+                    />
+                    <div 
+                        className="absolute w-[500px] h-[500px] rounded-full opacity-[0.06] blur-3xl animate-gradient-shift"
+                        style={{
+                            background: 'radial-gradient(circle, rgba(236, 72, 153, 0.4) 0%, transparent 70%)',
+                            top: `${100 - mousePosition.y}%`,
+                            left: `${100 - mousePosition.x}%`,
+                            transform: 'translate(-50%, -50%)',
+                            transition: 'top 0.3s ease-out, left 0.3s ease-out',
+                            animationDelay: '2s',
+                        }}
+                    />
+                </div>
+
+                {/* Floating Particles - Minimal & Elegant */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {[...Array(8)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="absolute w-1 h-1 bg-violet-400/20 rounded-full animate-particle-float"
+                            style={{
+                                top: `${Math.random() * 100}%`,
+                                left: `${Math.random() * 100}%`,
+                                animationDelay: `${i * 0.7}s`,
+                                animationDuration: `${5 + Math.random() * 3}s`,
+                            }}
+                        />
+                    ))}
+                </div>
+
+                {/* Main Content */}
                 <div className={`relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                    <div className="text-center space-y-5 sm:space-y-6 lg:space-y-7">
+                    <div className="text-center space-y-8 sm:space-y-10 lg:space-y-12">
 
+                       
 
-                        {/* Título Principal Elite */}
-                        <div className="space-y-3 sm:space-y-4 animate-fade-in-up-smooth" style={{ animationDelay: '0.3s' }}>
+                        {/* Main Title - Ultra Premium */}
+                        <div className="space-y-4 sm:space-y-5 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                             <div className="relative inline-block">
-                                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-[1.15] px-4">
-                                    <span className="block mb-2 bg-gradient-to-r from-sky-400 via-violet-500 to-pink-500 bg-clip-text text-transparent animate-text-shimmer-premium drop-shadow-2xl text-glow-elite">
+                                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight leading-[1.1] px-4">
+                                    <span className="block mb-3 bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 bg-clip-text text-transparent animate-text-shimmer text-glow-soft">
                                         Full Stack Developer
                                     </span>
-                                    <span className="block text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold text-slate-400">
+                                    <span className="block text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-slate-400/80 mb-2">
                                         Arquitecto de
                                     </span>
-                                    <span className="block mt-1.5 sm:mt-2 bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 bg-clip-text text-transparent animate-text-shimmer-premium text-glow-elite">
+                                    <span className="block bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent animate-text-shimmer text-glow-soft">
                                         Soluciones Digitales
                                     </span>
                                 </h1>
                             </div>
 
-                            {/* Línea Decorativa Elite */}
-                            <div className="flex justify-center items-center gap-3">
-                                <div className="w-16 sm:w-24 h-px bg-gradient-to-r from-transparent via-sky-400/60 to-sky-400" />
-                                <div className="relative w-32 sm:w-48 md:w-64 h-1.5 rounded-full overflow-hidden shadow-lg">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-sky-500 via-violet-500 to-pink-500 opacity-60" />
-                                    <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 animate-shimmer-elite" />
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-shimmer-elite" style={{ animationDelay: '0.5s' }} />
+                            {/* Refined Decorative Line */}
+                            <div className="flex justify-center items-center gap-4 mt-6">
+                                <div className="w-20 sm:w-32 h-px bg-gradient-to-r from-transparent via-violet-400/40 to-violet-400/60" />
+                                <div className="relative w-2 h-2 rounded-full bg-violet-400/60 animate-glow-subtle">
+                                    <div className="absolute inset-0 rounded-full bg-violet-400/40 animate-ping" style={{ animationDuration: '3s' }} />
                                 </div>
-                                <div className="w-16 sm:w-24 h-px bg-gradient-to-l from-transparent via-pink-400/60 to-pink-400" />
+                                <div className="w-20 sm:w-32 h-px bg-gradient-to-l from-transparent via-violet-400/40 to-violet-400/60" />
                             </div>
                         </div>
 
-                        {/* Descripción Concisa y Premium */}
-                        <div className="max-w-2xl mx-auto px-4 sm:px-6 animate-fade-in-up-smooth" style={{ animationDelay: '0.5s' }}>
-                            <p className="text-xs sm:text-sm md:text-base lg:text-lg text-slate-300 leading-relaxed font-semibold">
-                                Especializado en <span className="text-white font-black relative inline-block">
+                        {/* Elegant Description */}
+                        <div className="max-w-2xl mx-auto px-4 sm:px-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-300/90 leading-relaxed font-medium text-shadow-premium">
+                                Especializado en{' '}
+                                <span className="relative inline-block font-bold text-white">
                                     desarrollo end-to-end
-                                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-sky-400 to-violet-500 shadow-lg shadow-sky-400/50" />
-                                </span>, transformando ideas en{' '}
-                                <span className="bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent font-black">productos digitales</span> escalables y de alto rendimiento.
+                                    <span className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-sky-400/60 to-violet-400/60" />
+                                </span>
+                                , transformando ideas en{' '}
+                                <span className="bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent font-bold">
+                                    productos digitales
+                                </span>{' '}
+                                escalables y de alto rendimiento.
                             </p>
                         </div>
 
-                        {/* CTAs Premium Compactos */}
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3 px-4 animate-scale-in-smooth" style={{ animationDelay: '0.7s' }}>
-                            <button className="relative group w-full sm:w-auto overflow-hidden rounded-xl shadow-2xl hover:shadow-violet-500/50 transition-all duration-500 hover:scale-110 hover:-translate-y-1">
-                                <div className="absolute inset-0 bg-gradient-to-r from-sky-500 via-violet-500 to-pink-500 animate-gradient-flow" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-white/30 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                <div className="relative px-5 sm:px-7 py-2.5 sm:py-3 flex items-center justify-center gap-2 backdrop-blur-xl bg-gradient-to-r from-white/10 to-white/5 border border-white/30 rounded-xl">
-                                    <span className="text-sm font-black text-white tracking-wide drop-shadow-lg">Proyectos</span>
-                                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                        {/* Premium CTAs */}
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 px-4 animate-scale-in" style={{ animationDelay: '0.4s' }}>
+                            <Link 
+                                to="/proyectos" 
+                                onClick={scrollToTop}
+                                className="relative group w-full sm:w-auto overflow-hidden rounded-2xl hover-lift hover-glow"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-sky-500 via-violet-500 to-pink-500 animate-gradient-shift" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="relative px-8 py-3.5 flex items-center justify-center gap-2 backdrop-blur-sm bg-gradient-to-r from-white/10 to-white/5 border border-white/20 rounded-2xl">
+                                    <span className="text-sm font-bold text-white tracking-wide">Ver Proyectos</span>
+                                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:animate-shine-delicate" />
                                 </div>
-                            </button>
+                            </Link>
 
-                            <button className="relative group w-full sm:w-auto rounded-xl glass-elite-strong shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:-translate-y-1 border border-violet-400/40">
-                                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-violet-400/40 to-purple-400/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-                                <div className="relative px-5 sm:px-7 py-2.5 sm:py-3 flex items-center justify-center gap-2">
-                                    <Terminal className="w-4 h-4 text-violet-400 group-hover:text-violet-300 transition-colors duration-500 drop-shadow-lg" strokeWidth={2.5} />
-                                    <span className="text-sm font-black text-white tracking-wide">Contacto</span>
+                            <Link 
+                                to="/contacto" 
+                                onClick={scrollToTop}
+                                className="relative group w-full sm:w-auto rounded-2xl glass-premium-strong hover-lift hover-glow border border-violet-400/30 gradient-border"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="relative px-8 py-3.5 flex items-center justify-center gap-2.5">
+                                    <Terminal className="w-4 h-4 text-violet-400 group-hover:text-violet-300 transition-colors duration-500" strokeWidth={2.5} />
+                                    <span className="text-sm font-bold text-white tracking-wide">Contacto</span>
                                 </div>
-                            </button>
+                            </Link>
                         </div>
 
-                        {/* Skills Grid Elite - CARDS MÁS GRANDES */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-5 max-w-5xl lg:max-w-6xl mx-auto px-4 pt-4 sm:pt-6 lg:pt-10">
+                        {/* Premium Skills Grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 lg:gap-6 max-w-6xl mx-auto px-4 pt-8 sm:pt-12">
                             {skills.map((skill, index) => {
                                 const Icon = skill.icon;
                                 return (
                                     <div
                                         key={index}
-                                        className="relative group perspective-elite animate-fade-in-up-smooth"
+                                        className="relative group animate-fade-in-up"
                                         style={{
-                                            animationDelay: `${0.9 + index * 0.1}s`,
+                                            animationDelay: `${0.5 + index * 0.08}s`,
                                         }}
                                     >
-                                        <div className="relative glass-elite rounded-xl p-4 sm:p-5 lg:p-7 hover:glass-elite-strong transition-all duration-500 shadow-xl hover:shadow-2xl border border-white/15 hover:border-white/30 overflow-hidden">
+                                        <div className="relative glass-premium rounded-2xl p-6 sm:p-7 lg:p-8 hover:glass-premium-strong transition-all duration-500 shadow-lg hover:shadow-2xl border border-white/10 hover:border-white/20 overflow-hidden hover-lift gradient-border">
 
-                                            {/* Background Gradient Effect Premium */}
-                                            <div className={`absolute inset-0 bg-gradient-to-br ${skill.gradient} opacity-0 group-hover:opacity-15 rounded-xl transition-opacity duration-500`} />
-                                            <div className={`absolute inset-0 bg-gradient-to-br ${skill.gradient} opacity-0 group-hover:opacity-25 rounded-xl blur-2xl transition-opacity duration-500`} />
+                                            {/* Subtle Background Gradient */}
+                                            <div className={`absolute inset-0 bg-gradient-to-br ${skill.gradient} opacity-0 group-hover:opacity-[0.08] rounded-2xl transition-opacity duration-500`} />
 
-                                            {/* Shine Effect Elite */}
-                                            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/0 via-white/15 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 skew-x-12" />
+                                            {/* Gentle Shine Effect */}
+                                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                            <div className="relative flex flex-col items-center gap-2.5 lg:gap-4">
-                                                <div className={`relative p-2.5 lg:p-4 rounded-lg ${skill.bg} group-hover:scale-125 transition-transform duration-500 shadow-lg`}>
-                                                    <Icon className={`w-6 h-6 sm:w-7 sm:h-7 lg:w-10 lg:h-10 ${skill.color} group-hover:drop-shadow-2xl transition-all duration-500 animate-float-vertical`} strokeWidth={2.5} />
-                                                    <div className={`absolute inset-0 bg-gradient-to-r ${skill.gradient} opacity-0 group-hover:opacity-70 blur-xl transition-opacity duration-500 rounded-lg`} />
+                                            <div className="relative flex flex-col items-center gap-3 lg:gap-4">
+                                                <div className={`relative p-3 lg:p-4 rounded-xl ${skill.bg} group-hover:scale-110 transition-transform duration-500 shadow-md`}>
+                                                    <Icon 
+                                                        className={`w-7 h-7 sm:w-8 sm:h-8 lg:w-11 lg:h-11 ${skill.color} transition-all duration-500 animate-float-gentle`} 
+                                                        strokeWidth={2.5} 
+                                                        style={{ animationDelay: `${index * 0.2}s` }}
+                                                    />
+                                                    <div className={`absolute inset-0 bg-gradient-to-r ${skill.gradient} opacity-0 group-hover:opacity-40 blur-xl transition-opacity duration-500 rounded-xl`} />
                                                 </div>
-                                                <span className={`text-xs sm:text-sm lg:text-base font-black text-slate-400 group-hover:text-white transition-colors duration-500 text-center tracking-wide`}>
+                                                <span className="text-xs sm:text-sm lg:text-base font-bold text-slate-400 group-hover:text-white transition-colors duration-500 text-center tracking-wide">
                                                     {skill.label}
                                                 </span>
                                             </div>
 
-                                            {/* Corner Accents Elite */}
-                                            <div className={`absolute top-0 right-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 border-t-2 border-r-2 rounded-tr-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 ${skill.color}`} />
-                                            <div className={`absolute bottom-0 left-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 border-b-2 border-l-2 rounded-bl-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 ${skill.color}`} />
-
-                                            {/* Glow Effect */}
-                                            <div className={`absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} style={{ boxShadow: `0 0 40px rgba(139, 92, 246, 0.4)` }} />
+                                            {/* Refined Corner Accents */}
+                                            <div className="absolute top-0 right-0 w-10 h-10 lg:w-12 lg:h-12 border-t border-r border-white/0 group-hover:border-white/20 rounded-tr-2xl transition-all duration-500" />
+                                            <div className="absolute bottom-0 left-0 w-10 h-10 lg:w-12 lg:h-12 border-b border-l border-white/0 group-hover:border-white/20 rounded-bl-2xl transition-all duration-500" />
                                         </div>
                                     </div>
                                 );

@@ -84,7 +84,7 @@ const HighlightCard3D: React.FC<{ highlight: Highlight }> = ({ highlight }) => {
 
     const transformStyle = useMemo(() =>
         isHovered
-            ? `perspective(1200px) rotateX(${-mousePosition.y * 7}deg) rotateY(${mousePosition.x * 7}deg) translateZ(20px)`
+            ? `perspective(1200px) rotateX(${-mousePosition.y * 5}deg) rotateY(${mousePosition.x * 5}deg) translateZ(12px)`
             : 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0px)',
         [isHovered, mousePosition]
     );
@@ -93,39 +93,45 @@ const HighlightCard3D: React.FC<{ highlight: Highlight }> = ({ highlight }) => {
         <div className="animate-fade-in-up w-full" style={{ animationDelay: `${delay}s` }}>
             <article
                 ref={cardRef}
-                className="relative h-full p-8 sm:p-10 rounded-3xl transition-all duration-500 ease-out cursor-pointer group will-change-transform"
+                className="relative h-full p-6 sm:p-7 md:p-8 rounded-2xl transition-all duration-500 ease-out cursor-pointer group will-change-transform"
                 style={{
-                    backgroundColor: 'rgba(15, 23, 42, 0.4)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    border: `1px solid ${accentColor}30`,
+                    backgroundColor: 'rgba(15, 23, 42, 0.3)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: `1px solid ${accentColor}25`,
                     transform: transformStyle,
-                    boxShadow: isHovered ? `0 25px 50px -12px ${accentColor}40` : `none`,
+                    boxShadow: isHovered ? `0 20px 40px -12px ${accentColor}30` : `0 4px 6px -1px rgba(0, 0, 0, 0.1)`,
                 }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => { setIsHovered(false); setMousePosition({ x: 0, y: 0 }); }}
                 onMouseMove={handleMouseMove}
             >
-                {/* Glow dinámico más grande */}
-                <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ 
-                        background: `radial-gradient(600px circle at ${mousePosition.x * 50 + 50}% ${mousePosition.y * 50 + 50}%, ${accentColor}15, transparent 80%)` 
+                {/* Glow dinámico sutil */}
+                <div className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                        background: `radial-gradient(500px circle at ${mousePosition.x * 50 + 50}% ${mousePosition.y * 50 + 50}%, ${accentColor}12, transparent 70%)`
                     }} />
 
-                <div className="relative z-10 flex flex-col items-start gap-6">
-                    <div className="p-4 rounded-2xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shrink-0"
-                        style={{ backgroundColor: `${accentColor}15`, border: `1px solid ${accentColor}30` }}>
-                        <Icon className="w-8 h-8 md:w-10 md:h-10" style={{ color: accentColor }} />
+                <div className="relative z-10 flex flex-col items-start gap-4 sm:gap-5">
+                    <div className="p-3 sm:p-3.5 rounded-xl transition-all duration-500 group-hover:scale-105 shrink-0"
+                        style={{ backgroundColor: `${accentColor}12`, border: `1px solid ${accentColor}25` }}>
+                        <Icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" style={{ color: accentColor }} strokeWidth={2.5} />
                     </div>
-                    <div className="text-left space-y-3">
-                        <h3 className="text-xl sm:text-2xl font-bold text-slate-100 group-hover:text-white transition-colors tracking-tight">
+                    <div className="text-left space-y-2.5 sm:space-y-3">
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-100 group-hover:text-white transition-colors tracking-tight leading-tight">
                             {title}
                         </h3>
-                        <p className="text-base sm:text-lg text-slate-400 leading-relaxed font-light">
+                        <p className="text-sm sm:text-base md:text-lg text-slate-400/90 leading-relaxed font-normal">
                             {description}
                         </p>
                     </div>
                 </div>
+
+                {/* Subtle corner accents */}
+                <div className="absolute top-0 right-0 w-16 h-16 border-t border-r opacity-0 group-hover:opacity-30 rounded-tr-2xl transition-opacity duration-500"
+                    style={{ borderColor: accentColor }} />
+                <div className="absolute bottom-0 left-0 w-16 h-16 border-b border-l opacity-0 group-hover:opacity-30 rounded-bl-2xl transition-opacity duration-500"
+                    style={{ borderColor: accentColor }} />
             </article>
         </div>
     );
@@ -135,39 +141,68 @@ const About: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
 
+    // Scroll al top cuando el componente se monta
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) { setIsVisible(true); observer.unobserve(entry.target); }
+            if (entry.isIntersecting) {
+                setIsVisible(true);
+                observer.unobserve(entry.target);
+            }
         }, { threshold: 0.1 });
+
         if (sectionRef.current) observer.observe(sectionRef.current);
         return () => observer.disconnect();
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative min-h-screen overflow-hidden py-20 md:py-32">
-            {/* Orbes de fondo más grandes para acompañar el nuevo tamaño */}
-            <div className="absolute pointer-events-none opacity-40 top-0 left-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />
-            <div className="absolute pointer-events-none opacity-30 bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px]" />
+        <section ref={sectionRef} className="relative min-h-screen overflow-hidden pt-20 sm:pt-24 md:pt-28 pb-16 sm:pb-20 md:pb-24">
+            {/* Ambient Background - Ultra Subtle */}
+            <div className="absolute pointer-events-none opacity-[0.06] top-0 left-1/4 w-[600px] h-[600px] bg-purple-500/40 rounded-full blur-3xl" />
+            <div className="absolute pointer-events-none opacity-[0.05] bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-500/40 rounded-full blur-3xl" />
 
-            <div className="relative max-w-7xl mx-auto px-6 z-10">
-                <header className={`text-center space-y-6 mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                    <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-tight">
+            {/* Subtle gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/50 pointer-events-none" />
+
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+                <header className={`text-center space-y-5 sm:space-y-6 mb-12 sm:mb-16 md:mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                   
+
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] px-4">
                         <span style={{
                             background: 'linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 50%, #ec4899 100%)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                             backgroundClip: 'text',
                         }}>
-                            Analista de Sistemas <br className="hidden sm:block" /> & Arquitecto de Software
+                            Analista de Sistemas
+                        </span>
+                        <br />
+                        <span className="text-slate-400/80 text-xl sm:text-2xl md:text-3xl font-bold">
+                            & Arquitecto de Software
                         </span>
                     </h2>
-                    <p className="text-slate-400 max-w-3xl mx-auto text-lg sm:text-xl font-light leading-relaxed">
-                        Ingeniería de software de alto impacto. Me especializo en construir soluciones robustas 
+
+                    {/* Refined Decorative Line */}
+                    <div className="flex justify-center items-center gap-4 mt-4">
+                        <div className="w-20 sm:w-32 h-px bg-gradient-to-r from-transparent via-violet-400/40 to-violet-400/60" />
+                        <div className="relative w-2 h-2 rounded-full bg-violet-400/60">
+                            <div className="absolute inset-0 rounded-full bg-violet-400/40 animate-ping" style={{ animationDuration: '3s' }} />
+                        </div>
+                        <div className="w-20 sm:w-32 h-px bg-gradient-to-l from-transparent via-violet-400/40 to-violet-400/60" />
+                    </div>
+
+                    <p className="text-slate-400/90 max-w-2xl mx-auto text-sm sm:text-base md:text-lg font-medium leading-relaxed px-4">
+                        Ingeniería de software de alto impacto. Me especializo en construir{' '}
+                        <span className="text-white font-semibold">soluciones robustas</span>{' '}
                         que escalan al ritmo de las necesidades globales.
                     </p>
                 </header>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-7">
                     {highlights.map((highlight) => (
                         <HighlightCard3D key={highlight.title} highlight={highlight} />
                     ))}
@@ -176,10 +211,23 @@ const About: React.FC = () => {
 
             <style>{`
                 @keyframes fade-in-up { 
-                    from { opacity: 0; transform: translateY(40px); } 
+                    from { opacity: 0; transform: translateY(30px); } 
                     to { opacity: 1; transform: translateY(0); } 
                 }
-                .animate-fade-in-up { animation: fade-in-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
+                .animate-fade-in-up { 
+                    animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+                    opacity: 0; 
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    *,
+                    *::before,
+                    *::after {
+                        animation-duration: 0.01ms !important;
+                        animation-iteration-count: 1 !important;
+                        transition-duration: 0.01ms !important;
+                    }
+                }
             `}</style>
         </section>
     );
