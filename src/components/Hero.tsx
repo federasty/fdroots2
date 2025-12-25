@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Code2, Database, Layers, Cpu, Globe, Server, Terminal, Sparkles } from 'lucide-react';
+import { Code2, Database, Layers, Cpu, Globe, Server, Terminal } from 'lucide-react';
 
 export default function Hero() {
     const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
@@ -365,34 +365,7 @@ export default function Hero() {
                             </p>
                         </div>
 
-                        {/* Premium CTAs */}
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 px-4 animate-scale-in" style={{ animationDelay: '0.4s' }}>
-                            <Link 
-                                to="/proyectos" 
-                                onClick={scrollToTop}
-                                className="relative group w-full sm:w-auto overflow-hidden rounded-2xl hover-lift hover-glow"
-                            >
-                                <div className="absolute inset-0 bg-gradient-to-r from-sky-500 via-violet-500 to-pink-500 animate-gradient-shift" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                <div className="relative px-8 py-3.5 flex items-center justify-center gap-2 backdrop-blur-sm bg-gradient-to-r from-white/10 to-white/5 border border-white/20 rounded-2xl">
-                                    <span className="text-sm font-bold text-white tracking-wide">Ver Proyectos</span>
-                                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:animate-shine-delicate" />
-                                </div>
-                            </Link>
-
-                            <Link 
-                                to="/contacto" 
-                                onClick={scrollToTop}
-                                className="relative group w-full sm:w-auto rounded-2xl glass-premium-strong hover-lift hover-glow border border-violet-400/30 gradient-border"
-                            >
-                                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                <div className="relative px-8 py-3.5 flex items-center justify-center gap-2.5">
-                                    <Terminal className="w-4 h-4 text-violet-400 group-hover:text-violet-300 transition-colors duration-500" strokeWidth={2.5} />
-                                    <span className="text-sm font-bold text-white tracking-wide">Contacto</span>
-                                </div>
-                            </Link>
-                        </div>
-
+                    
                         {/* Premium Skills Grid */}
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 lg:gap-6 max-w-6xl mx-auto px-4 pt-8 sm:pt-12">
                             {skills.map((skill, index) => {

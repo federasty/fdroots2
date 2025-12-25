@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Github, Code2, ExternalLink, Sparkles, CheckCircle, Hourglass } from 'lucide-react'; // Importamos Hourglass
+import { Github, Code2, ExternalLink, Sparkles, CheckCircle, Hourglass, PauseCircle } from 'lucide-react';
 
-// Tipado del Proyecto (sin cambios)
 interface ProjectData {
   id: number;
   title: string;
@@ -20,7 +19,104 @@ interface ProjectData {
   accentColor: string;
 }
 
-const Project = () => {
+const projects: ProjectData[] = [
+  {
+    id: 1,
+    title: "ProRoller",
+    subtitle: "E-Commerce Moderno",
+    category: "E-Commerce",
+    description: "Tienda online de cortinas roller, con catálogo interactivo, compras seguras y experiencia de usuario intuitiva.",
+    image: "/proroller.png",
+    tech: ["Angular 16", "Angular Material", "Angular Router", "Hostinger"],
+    github: "https://github.com/andresdarin/Pro-Roller",
+    demo: "https://proroller.uy",
+    host: "Hostinger",
+    status: "Completado",
+    gradient: "from-rose-500/20 via-fuchsia-500/20 to-purple-600/20",
+    accentGradient: "from-rose-400 via-fuchsia-500 to-purple-600",
+    glowColor: "shadow-rose-500/50",
+    accentColor: '#ec4899'
+  },
+  {
+    id: 2,
+    title: "RiFacil",
+    subtitle: "Plataforma de Gestión",
+    category: "Full Stack",
+    description: "Plataforma web para gestión de rifas y ventas, con integración de pagos, roles de usuario y administración de sorteos y compras.",
+    image: "/rifacil.png",
+    tech: ["React + TypeScript", "Node.js + Express", "MongoDB", "JWT", "Mercado Pago", "Sendgrid", "Render", "Netlify"],
+    github: "https://github.com/federasty/rifacil",
+    demo: "https://rifacil.netlify.app",
+    host: "Netlify",
+    status: "Completado",
+    gradient: "from-emerald-500/20 via-teal-500/20 to-cyan-600/20",
+    accentGradient: "from-emerald-400 via-teal-500 to-cyan-600",
+    glowColor: "shadow-emerald-500/50",
+    accentColor: '#10b981'
+  },
+  {
+    id: 3,
+    title: "VFtransportes",
+    subtitle: "Soluciones de Transporte y Carga Pesada",
+    category: "UI Website",
+    description: "Empresa de transporte pesado dedicada a ofrecer soluciones confiables, seguras y eficientes para el traslado de carga de materiales de cantera",
+    image: "/vf.png",
+    tech: ["React + TypeScript", "Tailwind CSS", "Framer Motion", "React Router", "Sendgrid", "Vite", "Vercel"],
+    github: "https://github.com/federasty/vftransportes",
+    demo: "https://vftransportes.vercel.app/",
+    host: "Vercel",
+    status: "Completado",
+    gradient: "from-blue-500/20 via-indigo-500/20 to-violet-600/20",
+    accentGradient: "from-blue-400 via-indigo-500 to-violet-600",
+    glowColor: "shadow-blue-500/50",
+    accentColor: '#6366f1'
+  },
+  {
+    id: 4,
+    title: "La Pizzería",
+    subtitle: "Sistema de Venta",
+    category: "UI Website",
+    description: "Sistema completo para la gestión de pedidos de una pizzería: información y pedidos de manera rápida y eficiente",
+    image: "/la pizzeria.png",
+    tech: ["TypeScript", "Framer Motion", "React", "Tailwind CSS", "React Router", "Vite", "Next.js"],
+    github: "https://github.com/federasty/lapizzeria",
+    demo: "#",
+    host: "En desarrollo",
+    status: "En Progreso",
+    gradient: "from-amber-500/20 via-yellow-500/20 to-orange-500/20",
+    accentGradient: "from-amber-400 via-yellow-500 to-orange-500",
+    glowColor: "shadow-amber-500/50",
+    accentColor: '#f59e0b'
+  }
+];
+
+const StatusIcon: React.FC<{ status: ProjectData['status'] }> = ({ status }) => {
+  switch (status) {
+    case 'Completado':
+      return <CheckCircle className="w-4 h-4 text-green-400" />;
+    case 'En Progreso':
+      return <Hourglass className="w-4 h-4 text-amber-400 animate-spin-slow" />;
+    case 'Pausado':
+      return <PauseCircle className="w-4 h-4 text-red-400" />;
+    default:
+      return null;
+  }
+};
+
+const getStatusColor = (status: ProjectData['status']): string => {
+  switch (status) {
+    case 'Completado':
+      return 'text-green-400';
+    case 'En Progreso':
+      return 'text-amber-400';
+    case 'Pausado':
+      return 'text-red-400';
+    default:
+      return 'text-slate-400';
+  }
+};
+
+const Project: React.FC = () => {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -31,104 +127,10 @@ const Project = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Proyectos actualizados con "La Pizzería" (ID 4)
-  const projects: ProjectData[] = [
-    {
-      id: 1,
-      title: "ProRoller",
-      subtitle: "E-Commerce Moderno",
-      category: "E-Commerce",
-      description: "Tienda online de cortinas roller, con catálogo interactivo, compras seguras y experiencia de usuario intuitiva.",
-      image: "/proroller.png",
-      tech: ["Angular 16", "Angular Material", "Angular Router", "Hostinger"],
-      github: "https://github.com/andresdarin/Pro-Roller",
-      demo: "https://proroller.uy/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnuI0siNRXib1uey5KwKhe8sC8i_Qi8wQeJ9OIek2Gy34fwE-7FcSmC3e67bc_aem_9tGisV-OYa1J0EJYYPiQaQ",
-      host: "Hostinger",
-      status: "Completado",
-      gradient: "from-rose-500/20 via-fuchsia-500/20 to-purple-600/20",
-      accentGradient: "from-rose-400 via-fuchsia-500 to-purple-600",
-      glowColor: "shadow-rose-500/50",
-      accentColor: '#ec4899'
-    },
-    {
-      id: 2,
-      title: "RiFacil",
-      subtitle: "Plataforma de Gestión",
-      category: "Full Stack",
-      description: "Plataforma web para gestión de rifas y ventas, con integración de pagos, roles de usuario y administración de sorteos y compras.",
-      image: "/rifacil.png",
-      tech: [
-        "React + TypeScript",
-        "Node.js + Express",
-        "MongoDB",
-        "JWT",
-        "Mercado Pago",
-        "Sendgrid",
-        "Render",
-        "Netlify"
-      ],
-      github: "https://github.com/federasty/rifacil",
-      demo: "https://rifacil.netlify.app/#",
-      host: "Netlify",
-      status: "Completado",
-      gradient: "from-emerald-500/20 via-teal-500/20 to-cyan-600/20",
-      accentGradient: "from-emerald-400 via-teal-500 to-cyan-600",
-      glowColor: "shadow-emerald-500/50",
-      accentColor: '#10b981'
-    },
-    {
-      id: 3,
-      title: "VFtransportes",
-      subtitle: "Soluciones de Transporte y Carga Pesada",
-      category: "UI Website ",
-      description: "Empresa de transporte pesado dedicada a ofrecer soluciones confiables, seguras y eficientes para el traslado de carga de materiales de cantera",
-      image: "/vf.png",
-      tech: [
-        "React + TypeScript",
-        "Tailwind CSS",
-        "Framer Motion",
-        "React Router",
-        "Sendgrid",
-        "Vite" ,
-        "Vercel"
-      ],
-      github: "https://github.com/federasty/vftransportes",
-      demo: "https://vftransportes.vercel.app/",
-      host: "Vercel",
-      status: "Completado",
-      gradient: "from-blue-500/20 via-indigo-500/20 to-violet-600/20",
-      accentGradient: "from-blue-400 via-indigo-500 to-violet-600",
-      glowColor: "shadow-blue-500/50",
-      accentColor: '#6366f1'
-    },
-    {
-      id: 4,
-      title: "La Pizzería",
-      subtitle: "Sistema de Venta",
-      category: "UI Website",
-      description: "Sistema completo para la gestión de pedidos de una pizzería: informacion y pedidos de manera rapida y eficiente ",
-      image: "/la pizzeria.png",
-      tech: [
-        "TypeScript",
-        "Framer Motion",
-        "React",
-        "Tailwind CSS",
-        "React Router",
-        "Vite" , 
-        "Next.js"
-      ],
-      github: "https://github.com/federasty/lapizzeria", // Reemplazar con tu repo real
-      demo: "#", // En desarrollo, sin demo pública aún
-      host: "En desarrollo",
-      status: "En Progreso", // Estado "En Progreso"
-      gradient: "from-amber-500/20 via-yellow-500/20 to-orange-500/20",
-      accentGradient: "from-amber-400 via-yellow-500 to-orange-500",
-      glowColor: "shadow-amber-500/50",
-      accentColor: '#f59e0b' // Tailwind amber-500
-    }
-  ];
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
-  // --- Lógica de Hooks (sin cambios) ---
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -140,16 +142,12 @@ const Project = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (containerRef.current) {
-        const scrolled = window.scrollY;
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        setScrollProgress((scrolled / maxScroll) * 100);
-      }
+      const scrolled = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress((scrolled / maxScroll) * 100);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -161,15 +159,10 @@ const Project = () => {
       },
       { threshold: 0.1 }
     );
-    const currentRef = sectionRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
     }
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -186,39 +179,9 @@ const Project = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [isMobile]);
-  
-  // Función auxiliar para elegir el ícono de estado
-  const StatusIcon = ({ status }: { status: ProjectData['status'] }) => {
-    switch (status) {
-      case 'Completado':
-        return <CheckCircle className="w-4 h-4 text-green-400" />;
-      case 'En Progreso':
-        return <Hourglass className="w-4 h-4 text-amber-400 animate-spin-slow" />;
-      case 'Pausado':
-        return <Code2 className="w-4 h-4 text-red-400" />;
-      default:
-        return null;
-    }
-  };
-  
-  // Función auxiliar para elegir el color del texto de estado
-  const StatusTextColor = ({ status }: { status: ProjectData['status'] }) => {
-    switch (status) {
-      case 'Completado':
-        return 'text-green-400';
-      case 'En Progreso':
-        return 'text-amber-400';
-      case 'Pausado':
-        return 'text-red-400';
-      default:
-        return 'text-slate-400';
-    }
-  };
 
   return (
-    <div ref={containerRef} className="relative min-h-screen text-white overflow-hidden py-12 sm:py-16 md:py-20 lg:py-32 px-3 sm:px-4 md:px-6 lg:px-8">
-
-      {/* Progress Bar (sin cambios) */}
+    <div ref={containerRef} className="relative min-h-screen bg-slate-950 text-white overflow-hidden pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 md:pb-20 lg:pb-32 px-3 sm:px-4 md:px-6 lg:px-8">
       <div className="fixed top-0 left-0 right-0 h-0.5 sm:h-1 bg-slate-800/50 z-50">
         <div
           className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-300 will-change-transform"
@@ -227,8 +190,6 @@ const Project = () => {
       </div>
 
       <section ref={sectionRef} className="relative z-10">
-
-        {/* Ambient Background Orbs (sin cambios) */}
         {!isMobile && (
           <>
             <div
@@ -248,24 +209,26 @@ const Project = () => {
           </>
         )}
 
-        {/* Hero Header (sin cambios) */}
-        <div className="max-w-7xl mx-auto mb-8 sm:mb-12 md:mb-16">
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/50 pointer-events-none" aria-hidden="true" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <header
-            className={`text-center space-y-3 sm:space-y-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+            className={`text-center space-y-5 sm:space-y-6 mb-12 sm:mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight px-4">
-              <span className="block bg-gradient-to-r from-sky-400 via-violet-500 to-pink-500 bg-clip-text text-transparent animate-text-shimmer">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] px-4">
+              <span className="block bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 bg-clip-text text-transparent animate-text-shimmer">
                 Proyectos Destacados
               </span>
-            </h2>
-            <div className="flex justify-center items-center gap-2 sm:gap-3 px-4" aria-hidden="true">
-              <div className="w-12 sm:w-16 lg:w-20 h-px bg-gradient-to-r from-transparent via-sky-400/30 to-sky-400" />
-              <div className="relative w-32 sm:w-40 lg:w-48 h-0.5 sm:h-1 rounded-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-sky-500 via-violet-500 to-pink-500 opacity-40" />
-                <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 animate-shimmer" />
+            </h1>
+
+            <div className="flex justify-center items-center gap-4 mt-4" aria-hidden="true">
+              <div className="w-20 sm:w-32 h-px bg-gradient-to-r from-transparent via-violet-400/40 to-violet-400/60" />
+              <div className="relative w-2 h-2 rounded-full bg-violet-400/60">
+                <div className="absolute inset-0 rounded-full bg-violet-400/40 animate-ping" style={{ animationDuration: '3s' }} />
               </div>
-              <div className="w-12 sm:w-16 lg:w-20 h-px bg-gradient-to-l from-transparent via-pink-400/30 to-pink-400" />
+              <div className="w-20 sm:w-32 h-px bg-gradient-to-l from-transparent via-violet-400/40 to-violet-400/60" />
             </div>
+
             <p className="text-sm sm:text-base lg:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed px-4">
               Donde la{' '}
               <span className="bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 bg-clip-text text-transparent font-bold">
@@ -279,11 +242,10 @@ const Project = () => {
           </header>
         </div>
 
-        {/* Projects Grid - Mapeo de proyectos */}
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
             {projects.map((project, index) => (
-              <div
+              <article
                 key={project.id}
                 onMouseEnter={() => !isMobile && setHoveredProject(project.id)}
                 onMouseLeave={() => !isMobile && setHoveredProject(null)}
@@ -292,53 +254,40 @@ const Project = () => {
                   animation: `slideInUp 1s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.15}s both`
                 }}
               >
-                {/* Outer Glow (sin cambios) */}
                 <div className={`absolute -inset-0.5 bg-gradient-to-r ${project.accentGradient} rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 blur-lg sm:blur-xl transition-all duration-700 ${project.glowColor} will-change-transform`} />
 
-                {/* Card Container (sin cambios) */}
                 <div className="relative h-full bg-gradient-to-br from-slate-900/90 to-slate-800/90 rounded-2xl sm:rounded-3xl border border-slate-700/50 overflow-hidden backdrop-blur-2xl transition-all duration-700 hover:border-slate-600 hover:shadow-2xl md:hover:scale-[1.02] md:hover:-translate-y-3 will-change-transform">
-
-                  {/* Gradient Overlay (sin cambios) */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
 
-                  {/* Animated Border (sin cambios) */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                     <div className={`absolute inset-0 bg-gradient-to-r ${project.accentGradient} opacity-20 blur-2xl`} />
                   </div>
 
                   <div className="relative">
-                    {/* Image Section (sin cambios) */}
                     <div className="relative h-64 sm:h-80 md:h-96 overflow-hidden">
-
-                      {/* Multiple Gradient Overlays (sin cambios) */}
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent z-10" />
                       <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-40 transition-all duration-700 z-10`} />
 
-                      {/* Image (sin cambios) */}
                       <div className="w-full h-full p-3 sm:p-4">
                         <img
                           src={project.image}
-                          alt={project.title}
+                          alt={`Captura de pantalla del proyecto ${project.title}`}
                           className="w-full h-full object-contain transition-all duration-1000 group-hover:scale-110 will-change-transform"
                           loading="lazy"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            // Puedes cambiar esta imagen de placeholder por una que tú desees,
-                            // o una específica para cada proyecto.
-                            target.src = '/placeholder.png'; // Asegúrate de tener una imagen placeholder en public/
+                            target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23334155" width="400" height="300"/%3E%3Ctext fill="%2394a3b8" font-family="sans-serif" font-size="18" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3EImagen no disponible%3C/text%3E%3C/svg%3E';
                           }}
                         />
                       </div>
 
-                      {/* Status Badge - MODIFICADO para usar StatusIcon y StatusTextColor */}
-                      <div className="absolute top-3 sm:top-4 lg:top-6 right-3 sm:right-4 lg:right-6 z-20 flex items-center gap-1 transform transition-all duration-500 group-hover:scale-110">
+                      <div className="absolute top-3 sm:top-4 lg:top-6 right-3 sm:right-4 lg:right-6 z-20 flex items-center gap-1.5 transform transition-all duration-500 group-hover:scale-110">
                         <StatusIcon status={project.status} />
-                        <span className={`text-xs sm:text-sm font-bold tracking-wide ${StatusTextColor({ status: project.status })}`}>
+                        <span className={`text-xs sm:text-sm font-bold tracking-wide ${getStatusColor(project.status)}`}>
                           {project.status}
                         </span>
                       </div>
 
-                      {/* Category Badge (sin cambios) */}
                       <div className="absolute top-3 sm:top-4 lg:top-6 left-3 sm:left-4 lg:left-6 z-20 transform transition-all duration-500 group-hover:scale-110">
                         <div className={`px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 bg-gradient-to-r ${project.gradient} backdrop-blur-2xl rounded-xl sm:rounded-2xl border border-white/20 shadow-xl sm:shadow-2xl`}>
                           <span className="text-xs sm:text-sm font-bold text-white tracking-wide">{project.category}</span>
@@ -346,36 +295,29 @@ const Project = () => {
                       </div>
                     </div>
 
-                    {/* Content Section (sin cambios) */}
                     <div className="relative p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-5 lg:space-y-6">
-
-                      {/* Title & Subtitle (sin cambios) */}
                       <div className="space-y-1 sm:space-y-2">
-                        <h3 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight transition-all duration-500 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:via-blue-200 group-hover:to-purple-300 group-hover:bg-clip-text">
+                        <h2 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight transition-all duration-500 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:via-blue-200 group-hover:to-purple-300 group-hover:bg-clip-text">
                           {project.title}
-                        </h3>
+                        </h2>
                         <p className="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-widest">
                           {project.subtitle}
                         </p>
                       </div>
 
-                      {/* Description (sin cambios) */}
                       <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
                         {project.description}
                       </p>
 
-                      {/* Deployment Host (sin cambios) */}
                       <div className="flex items-center gap-2">
                         <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
                         <span className="text-xs sm:text-sm font-bold text-slate-300 uppercase tracking-wider">
-                          Host de Despliegue: <span className={`text-sm sm:text-base font-extrabold`} style={{ color: project.accentColor }}>{project.host}</span>
+                          Host: <span className="text-sm sm:text-base font-extrabold" style={{ color: project.accentColor }}>{project.host}</span>
                         </span>
                       </div>
 
-                      {/* Divider (sin cambios) */}
                       <div className={`h-px bg-gradient-to-r ${project.accentGradient} opacity-20`} />
 
-                      {/* Tech Stack (sin cambios) */}
                       <div className="space-y-3 sm:space-y-4">
                         <div className="flex items-center gap-2">
                           <Code2 className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
@@ -397,9 +339,7 @@ const Project = () => {
                         </div>
                       </div>
 
-                      {/* Premium Action Buttons (sin cambios en la estructura) */}
                       <div className="pt-2 sm:pt-3 lg:pt-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
-                        {/* Ver Demo Button */}
                         <a
                           href={project.demo}
                           target="_blank"
@@ -415,19 +355,16 @@ const Project = () => {
                               : 'none',
                             WebkitTapHighlightColor: 'transparent'
                           }}
-                          aria-label={`Ver demo de ${project.title} en ${project.host}`}
-                          // Deshabilita el click si no está completado
+                          aria-label={`Ver demo de ${project.title}`}
                           onClick={(e) => project.status !== 'Completado' && e.preventDefault()}
                         >
-                          {/* Animated Background */}
                           <div
-                            className={`absolute inset-0 bg-gradient-to-r opacity-0 group-hover/demo:opacity-100 group-active/demo:opacity-100 transition-all duration-500`}
+                            className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover/demo:opacity-100 group-active/demo:opacity-100 transition-all duration-500"
                             style={{
                               background: `linear-gradient(135deg, ${project.accentColor}20, ${project.accentColor}10, transparent)`
                             }}
                           />
 
-                          {/* Shine Effect */}
                           <div
                             className="absolute inset-0 opacity-0 group-hover/demo:opacity-100 transition-opacity duration-700"
                             style={{
@@ -436,7 +373,6 @@ const Project = () => {
                             }}
                           />
 
-                          {/* Particle Effects - Solo desktop */}
                           {!isMobile && hoveredButton === `demo-${project.id}` && (
                             <>
                               {[...Array(8)].map((_, i) => (
@@ -455,7 +391,6 @@ const Project = () => {
                             </>
                           )}
 
-                          {/* Border Glow */}
                           <div
                             className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover/demo:opacity-100 group-active/demo:opacity-100 transition-opacity duration-500"
                             style={{
@@ -463,7 +398,6 @@ const Project = () => {
                             }}
                           />
 
-                          {/* Button Content */}
                           <div className="relative z-10 flex items-center justify-center gap-1.5 sm:gap-2">
                             <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/demo:scale-110 group-hover/demo:rotate-12" />
                             <span className="font-bold text-xs sm:text-sm tracking-wide">
@@ -473,7 +407,6 @@ const Project = () => {
                           </div>
                         </a>
 
-                        {/* GitHub Button (sin cambios en la estructura) */}
                         <a
                           href={project.github}
                           target="_blank"
@@ -491,7 +424,6 @@ const Project = () => {
                           }}
                           aria-label={`Ver código en GitHub de ${project.title}`}
                         >
-                          {/* Animated Background */}
                           <div
                             className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover/github:opacity-100 group-active/github:opacity-100 transition-all duration-500"
                             style={{
@@ -499,7 +431,6 @@ const Project = () => {
                             }}
                           />
 
-                          {/* Shine Effect */}
                           <div
                             className="absolute inset-0 opacity-0 group-hover/github:opacity-100 transition-opacity duration-700"
                             style={{
@@ -508,7 +439,6 @@ const Project = () => {
                             }}
                           />
 
-                          {/* Particle Effects - Solo desktop */}
                           {!isMobile && hoveredButton === `github-${project.id}` && (
                             <>
                               {[...Array(8)].map((_, i) => (
@@ -527,7 +457,6 @@ const Project = () => {
                             </>
                           )}
 
-                          {/* Border Glow */}
                           <div
                             className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover/github:opacity-100 group-active/github:opacity-100 transition-opacity duration-500"
                             style={{
@@ -535,7 +464,6 @@ const Project = () => {
                             }}
                           />
 
-                          {/* Button Content */}
                           <div className="relative z-10 flex items-center justify-center gap-1.5 sm:gap-2">
                             <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/github:scale-110 group-hover/github:rotate-12" />
                             <span className="font-bold text-xs sm:text-sm tracking-wide">Ver Código</span>
@@ -545,20 +473,16 @@ const Project = () => {
                       </div>
                     </div>
 
-                    {/* Bottom Accent Line (sin cambios) */}
                     <div className={`absolute bottom-0 left-0 right-0 h-1 sm:h-1.5 bg-gradient-to-r ${project.accentGradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left will-change-transform`} />
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Estilos CSS - MODIFICACIÓN para un nuevo keyframe */}
       <style>{`
-        /* ... (tus keyframes existentes, sin cambios) ... */
-        
         @keyframes slideInUp {
           from {
             opacity: 0;
@@ -582,24 +506,13 @@ const Project = () => {
         }
 
         @keyframes text-shimmer {
-          0% { background-position: 0% 50%; }
+          0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
         }
         
         .animate-text-shimmer { 
           animation: text-shimmer 6s ease-in-out infinite; 
           background-size: 200% auto; 
-        }
-
-        @keyframes shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        
-        .animate-shimmer { 
-          animation: shimmer 3s linear infinite; 
-          background-size: 200% 100%; 
         }
 
         @keyframes shine {
@@ -647,18 +560,15 @@ const Project = () => {
           animation: float-reverse 25s ease-in-out infinite; 
         }
         
-        /* Nuevo keyframe para el ícono de "En Progreso" */
         @keyframes spin-slow {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
         
         .animate-spin-slow {
-          animation: spin-slow 4s linear infinite; /* Animación más lenta que la normal de spin */
+          animation: spin-slow 4s linear infinite;
         }
 
-
-        /* Optimizaciones de performance */
         @media (prefers-reduced-motion: reduce) {
           *, *::before, *::after {
             animation-duration: 0.01ms !important;

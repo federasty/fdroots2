@@ -33,7 +33,7 @@ const Contact: React.FC = () => {
     subject: '',
     message: ''
   });
-  
+
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -122,7 +122,7 @@ const Contact: React.FC = () => {
 
   useEffect(() => {
     if (isMobile) return;
-    
+
     const handleMouseMove = (e: MouseEvent) => {
       if (sectionRef.current) {
         const rect = sectionRef.current.getBoundingClientRect();
@@ -192,17 +192,17 @@ const Contact: React.FC = () => {
       );
 
       console.log('Email enviado exitosamente:', response);
-      
+
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
+
       setTimeout(() => {
         setSubmitStatus('idle');
       }, 5000);
     } catch (error) {
       console.error('Error al enviar el email:', error);
       setSubmitStatus('error');
-      
+
       setTimeout(() => {
         setSubmitStatus('idle');
       }, 5000);
@@ -214,7 +214,7 @@ const Contact: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
@@ -335,28 +335,31 @@ const Contact: React.FC = () => {
         )}
 
         {/* Dark Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-radial from-transparent via-slate-950/70 to-slate-950/90 pointer-events-none" aria-hidden="true" />
+        {/* Subtle Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/50 pointer-events-none" aria-hidden="true" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <header
-            className={`text-center space-y-4 mb-12 sm:mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+            className={`text-center space-y-5 sm:space-y-6 mb-12 sm:mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
           >
-            <h2 id="contact-heading" className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight">
-              <span className="block bg-gradient-to-r from-sky-400 via-violet-500 to-pink-500 bg-clip-text text-transparent animate-text-shimmer">
-                Hablemos de tu Proyecto
+            {/* Main Title */}
+            <h2 id="skills-heading" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] px-4">
+              <span className="block bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 bg-clip-text text-transparent animate-text-shimmer">
+                Hablemos de tu proyecto
               </span>
             </h2>
 
-            {/* Decorative Divider */}
-            <div className="flex justify-center items-center gap-3" aria-hidden="true">
-              <div className="w-20 h-px bg-gradient-to-r from-transparent via-sky-400/30 to-sky-400" />
-              <div className="relative w-48 h-1 rounded-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-sky-500 via-violet-500 to-pink-500 opacity-40" />
-                <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 animate-shimmer" />
+            {/* Refined Decorative Line */}
+            <div className="flex justify-center items-center gap-4 mt-4" aria-hidden="true">
+              <div className="w-20 sm:w-32 h-px bg-gradient-to-r from-transparent via-violet-400/40 to-violet-400/60" />
+              <div className="relative w-2 h-2 rounded-full bg-violet-400/60">
+                <div className="absolute inset-0 rounded-full bg-violet-400/40 animate-ping" style={{ animationDuration: '3s' }} />
               </div>
-              <div className="w-20 h-px bg-gradient-to-l from-transparent via-pink-400/30 to-pink-400" />
+              <div className="w-20 sm:w-32 h-px bg-gradient-to-l from-transparent via-violet-400/40 to-violet-400/60" />
             </div>
+
+
 
             <p className="text-base sm:text-lg lg:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
               ¿Tienes una idea o un desafío técnico? Estoy listo para ayudarte a construir{' '}
@@ -376,7 +379,7 @@ const Contact: React.FC = () => {
                   <Code2 className="w-6 h-6 text-sky-400" />
                   Datos de Contacto
                 </h3>
-                
+
                 <div className="grid grid-cols-1 gap-4">
                   {contactMethods.map((method, index) => {
                     const Icon = method.icon;
@@ -395,7 +398,7 @@ const Contact: React.FC = () => {
                         }}
                       >
                         {/* Outer Glow */}
-                        <div 
+                        <div
                           className="absolute -inset-0.5 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg transition-all duration-700"
                           style={{
                             background: `linear-gradient(135deg, ${method.accentColor}30, transparent, ${method.accentColor}20)`
@@ -403,7 +406,7 @@ const Contact: React.FC = () => {
                         />
 
                         {/* Card */}
-                        <div 
+                        <div
                           className="relative bg-slate-900/50 backdrop-blur-xl rounded-2xl p-5 border transition-all duration-700 hover:scale-[1.02] will-change-transform"
                           style={{
                             borderColor: hoveredMethod === index ? `${method.accentColor}50` : 'rgb(51 65 85 / 0.5)',
@@ -411,13 +414,13 @@ const Contact: React.FC = () => {
                           }}
                         >
                           {/* Background Gradient */}
-                          <div 
+                          <div
                             className={`absolute inset-0 bg-gradient-to-br ${method.gradient} rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-700`}
                           />
 
                           <div className="relative z-10 flex items-center gap-4">
                             {/* Icon */}
-                            <div 
+                            <div
                               className="p-3 rounded-xl transition-all duration-500 group-hover:scale-110"
                               style={{
                                 backgroundColor: `${method.accentColor}15`,
@@ -426,8 +429,8 @@ const Contact: React.FC = () => {
                                 borderStyle: 'solid'
                               }}
                             >
-                              <Icon 
-                                className="w-6 h-6 transition-all duration-500" 
+                              <Icon
+                                className="w-6 h-6 transition-all duration-500"
                                 style={{ color: method.accentColor }}
                               />
                             </div>
@@ -495,13 +498,12 @@ const Contact: React.FC = () => {
                           onChange={handleChange}
                           onFocus={() => setFocusedField('name')}
                           onBlur={() => setFocusedField(null)}
-                          className={`w-full px-4 py-3 bg-slate-800/50 border rounded-xl text-slate-200 placeholder-slate-500 transition-all duration-300 focus:outline-none focus:ring-2 ${
-                            errors.name 
-                              ? 'border-red-500/50 focus:ring-red-500/50' 
+                          className={`w-full px-4 py-3 bg-slate-800/50 border rounded-xl text-slate-200 placeholder-slate-500 transition-all duration-300 focus:outline-none focus:ring-2 ${errors.name
+                              ? 'border-red-500/50 focus:ring-red-500/50'
                               : focusedField === 'name'
-                              ? 'border-violet-500/50 focus:ring-violet-500/50'
-                              : 'border-slate-700/50'
-                          }`}
+                                ? 'border-violet-500/50 focus:ring-violet-500/50'
+                                : 'border-slate-700/50'
+                            }`}
                           placeholder="Juan Pérez"
                         />
                         {focusedField === 'name' && !errors.name && (
@@ -530,13 +532,12 @@ const Contact: React.FC = () => {
                           onChange={handleChange}
                           onFocus={() => setFocusedField('email')}
                           onBlur={() => setFocusedField(null)}
-                          className={`w-full px-4 py-3 bg-slate-800/50 border rounded-xl text-slate-200 placeholder-slate-500 transition-all duration-300 focus:outline-none focus:ring-2 ${
-                            errors.email 
-                              ? 'border-red-500/50 focus:ring-red-500/50' 
+                          className={`w-full px-4 py-3 bg-slate-800/50 border rounded-xl text-slate-200 placeholder-slate-500 transition-all duration-300 focus:outline-none focus:ring-2 ${errors.email
+                              ? 'border-red-500/50 focus:ring-red-500/50'
                               : focusedField === 'email'
-                              ? 'border-violet-500/50 focus:ring-violet-500/50'
-                              : 'border-slate-700/50'
-                          }`}
+                                ? 'border-violet-500/50 focus:ring-violet-500/50'
+                                : 'border-slate-700/50'
+                            }`}
                           placeholder="juan@ejemplo.com"
                         />
                         {focusedField === 'email' && !errors.email && (
@@ -565,13 +566,12 @@ const Contact: React.FC = () => {
                           onChange={handleChange}
                           onFocus={() => setFocusedField('subject')}
                           onBlur={() => setFocusedField(null)}
-                          className={`w-full px-4 py-3 bg-slate-800/50 border rounded-xl text-slate-200 placeholder-slate-500 transition-all duration-300 focus:outline-none focus:ring-2 ${
-                            errors.subject 
-                              ? 'border-red-500/50 focus:ring-red-500/50' 
+                          className={`w-full px-4 py-3 bg-slate-800/50 border rounded-xl text-slate-200 placeholder-slate-500 transition-all duration-300 focus:outline-none focus:ring-2 ${errors.subject
+                              ? 'border-red-500/50 focus:ring-red-500/50'
                               : focusedField === 'subject'
-                              ? 'border-violet-500/50 focus:ring-violet-500/50'
-                              : 'border-slate-700/50'
-                          }`}
+                                ? 'border-violet-500/50 focus:ring-violet-500/50'
+                                : 'border-slate-700/50'
+                            }`}
                           placeholder="Propuesta de proyecto"
                         />
                         {focusedField === 'subject' && !errors.subject && (
@@ -600,13 +600,12 @@ const Contact: React.FC = () => {
                           onFocus={() => setFocusedField('message')}
                           onBlur={() => setFocusedField(null)}
                           rows={5}
-                          className={`w-full px-4 py-3 bg-slate-800/50 border rounded-xl text-slate-200 placeholder-slate-500 transition-all duration-300 focus:outline-none focus:ring-2 resize-none ${
-                            errors.message 
-                              ? 'border-red-500/50 focus:ring-red-500/50' 
+                          className={`w-full px-4 py-3 bg-slate-800/50 border rounded-xl text-slate-200 placeholder-slate-500 transition-all duration-300 focus:outline-none focus:ring-2 resize-none ${errors.message
+                              ? 'border-red-500/50 focus:ring-red-500/50'
                               : focusedField === 'message'
-                              ? 'border-violet-500/50 focus:ring-violet-500/50'
-                              : 'border-slate-700/50'
-                          }`}
+                                ? 'border-violet-500/50 focus:ring-violet-500/50'
+                                : 'border-slate-700/50'
+                            }`}
                           placeholder="Cuéntame sobre tu proyecto..."
                         />
                         {focusedField === 'message' && !errors.message && (
@@ -630,7 +629,7 @@ const Contact: React.FC = () => {
                     >
                       {/* Animated Background */}
                       <div className="absolute inset-0 bg-gradient-to-r from-sky-400 via-violet-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
+
                       {/* Shine Effect */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
 
